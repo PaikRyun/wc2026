@@ -439,16 +439,6 @@
 
   <div class="perf-divider"></div>
 
-  <!-- JSONBin 공유 링크 안내 -->
-  <div id="bin-notice" style="display:none;background:rgba(46,160,67,.18);border:1px solid rgba(46,160,67,.5);border-radius:10px;padding:16px 18px;margin-bottom:20px;">
-    <div style="font-family:'Black Han Sans';font-size:15px;color:#3fb950;margin-bottom:6px;">🔗 공유 링크 (이 링크를 팀원 전체에게 공유하세요!)</div>
-    <div style="font-size:12px;color:rgba(244,236,216,.7);margin-bottom:10px;">이 링크로 접속한 모든 사람이 참가신청·대진표를 실시간으로 공유해요. 10초마다 자동 동기화됩니다.</div>
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-      <code id="bin-url" style="background:rgba(0,0,0,.35);padding:8px 12px;border-radius:6px;font-size:12px;word-break:break-all;flex:1;color:#7ee787;"></code>
-      <button id="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('bin-url').textContent).then(()=>{this.textContent='✅ 복사됨!';setTimeout(()=>this.textContent='📋 링크 복사',2000)})" style="font-family:'Black Han Sans';font-weight:400;font-size:13px;padding:8px 16px;border-radius:8px;border:none;background:var(--gold);color:var(--ink);cursor:pointer;flex-shrink:0;">📋 링크 복사</button>
-    </div>
-  </div>
-
   <section class="pot-board">
     <div class="pot-left">
       <label>참가비</label>
@@ -757,66 +747,31 @@
     return [...s].map(ch => ch === ',' ? '<span class="led-comma"></span>' : `<span class="led-digit">${ch}</span>`).join('');
   }
 
-  // ── JSONBin.io 실시간 공유 저장소 ──
-  const JSONBIN_KEY = '$2a$10$50XY/gUazdWBd8ewbwDjOuSWG7RKFQ92lzj13o/f5Fg5dXue3Wkqu';
-  const JSONBIN_API = 'https://api.jsonbin.io/v3/b';
-
-  // BIN ID: URL 파라미터 (?bin=xxx) → localStorage → 없으면 신규 생성
-  function getBinId(){ return new URLSearchParams(location.search).get('bin') || localStorage.getItem('jsonbin_bin_id') || ''; }
-  function saveBinId(id){ localStorage.setItem('jsonbin_bin_id', id); }
+  // ── Firebase Realtime Database — 실시간 공유 저장소 ──
+  const FB_URL = 'https://wc2026-260fd-default-rtdb.firebaseio.com/state.json';
 
   async function loadState(){
-    const binId = getBinId();
-    if(!binId) return null;
     try{
-      const r = await fetch(`${JSONBIN_API}/${binId}/latest`, {
-        headers:{ 'X-Master-Key': JSONBIN_KEY }
-      });
+      const r = await fetch(FB_URL);
       if(!r.ok) return null;
-      const d = await r.json();
-      return d.record || null;
+      return await r.json();
     }catch(e){ return null; }
   }
 
   async function saveState(){
     state.updatedAt = Date.now();
-    let binId = getBinId();
     try{
-      if(!binId){
-        // 처음 실행 — 새 bin 생성
-        const r = await fetch(JSONBIN_API, {
-          method:'POST',
-          headers:{ 'Content-Type':'application/json', 'X-Master-Key': JSONBIN_KEY, 'X-Bin-Name':'wc2026-game' },
-          body: JSON.stringify(state)
-        });
-        const d = await r.json();
-        binId = d.metadata.id;
-        saveBinId(binId);
-        // URL에 bin ID 표시 — 이 URL을 공유하면 모두 같은 데이터 사용
-        const newUrl = location.origin + location.pathname + '?bin=' + binId;
-        history.replaceState(null,'', '?bin=' + binId);
-        showBinNotice(newUrl);
-        setStatus('✅ 공유 링크 생성 완료!');
-      } else {
-        const r = await fetch(`${JSONBIN_API}/${binId}`, {
-          method:'PUT',
-          headers:{ 'Content-Type':'application/json', 'X-Master-Key': JSONBIN_KEY },
-          body: JSON.stringify(state)
-        });
-        if(r.ok) setStatus('저장됨 · ' + timeStr(state.updatedAt));
-        else setStatus('저장 실패 · 재시도 중...');
-      }
+      const r = await fetch(FB_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state)
+      });
+      if(r.ok) setStatus('저장됨 · ' + timeStr(state.updatedAt));
+      else setStatus('저장 실패');
     }catch(e){
       console.error(e);
       setStatus('저장 실패');
     }
-  }
-
-  function showBinNotice(url){
-    const el = document.getElementById('bin-notice');
-    if(!el) return;
-    el.style.display = 'block';
-    el.querySelector('#bin-url').textContent = url;
   }
 
   function scheduleSave(){
@@ -1587,20 +1542,7 @@
   (async function init(){
     buildBracketSkeleton();
     setStatus('불러오는 중...');
-
-    // bin ID가 URL에 있으면 공유 링크 안내 즉시 표시
-    if(getBinId()){
-      showBinNotice(location.origin + location.pathname + '?bin=' + getBinId());
-      const loaded = await loadState();
-      state = migrate(loaded) || defaultState();
-    } else {
-      // bin ID가 없으면 바로 새 bin 생성 (첫 방문자 = 관리자)
-      state = defaultState();
-      setStatus('공유 저장소 생성 중...');
-      await saveState(); // 이 안에서 bin 생성 + URL 업데이트
-    }
-
-    propagateBracket();
+    const loaded = await loadState();
     state = migrate(loaded) || defaultState();
     propagateBracket();
     updateCountryDatalist();
@@ -1608,7 +1550,8 @@
 
     // 국가 입력창: 포커스 시 자동 클리어 → 목록 바로 보임
     // 블러 시 아무것도 선택 안 했으면 이전 값 복원
-    document.addEventListener('focus', e =��o�r��'�M V 'signup-country' || e.target.id === 'edit-country-input'){
+    document.addEventListener('focus', e => {
+      if(e.target.id === 'signup-country' || e.target.id === 'edit-country-input'){
         e.target.dataset.prev = e.target.value;
         e.target.value = '';
       }
@@ -1619,8 +1562,7 @@
       }
     }, true);
 
-    window.addEventListener('storage', () => pollSync());
-    // JSONBin 실시간 동기화 — 10초마다 최신 데이터 확인
+    // Firebase 실시간 동기화 — 10초마다 최신 데이터 확인
     setInterval(pollSync, 10000);
   })();
 </script>
