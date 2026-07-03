@@ -439,6 +439,16 @@
 
   <div class="perf-divider"></div>
 
+  <!-- JSONBin 공유 링크 안내 -->
+  <div id="bin-notice" style="display:none;background:rgba(46,160,67,.18);border:1px solid rgba(46,160,67,.5);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;">
+    <b style="color:#3fb950;font-size:14px;">✅ 공유 링크가 생성됐어요!</b><br>
+    아래 링크를 팀원들에게 공유하면 모두 같은 데이터를 실시간으로 공유해요.<br>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+      <code id="bin-url" style="background:rgba(0,0,0,.3);padding:6px 10px;border-radius:6px;font-size:12px;word-break:break-all;flex:1;"></code>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('bin-url').textContent).then(()=>this.textContent='복사됨 ✓')" style="font-family:'Pretendard';font-size:12px;padding:6px 12px;border-radius:6px;border:none;background:var(--gold);color:var(--ink);cursor:pointer;flex-shrink:0;">링크 복사</button>
+    </div>
+  </div>
+
   <section class="pot-board">
     <div class="pot-left">
       <label>참가비</label>
@@ -747,23 +757,66 @@
     return [...s].map(ch => ch === ',' ? '<span class="led-comma"></span>' : `<span class="led-digit">${ch}</span>`).join('');
   }
 
+  // ── JSONBin.io 실시간 공유 저장소 ──
+  const JSONBIN_KEY = '$2a$10$50XY/gUazdWBd8ewbwDjOuSWG7RKFQ92lzj13o/f5Fg5dXue3Wkqu';
+  const JSONBIN_API = 'https://api.jsonbin.io/v3/b';
+
+  // BIN ID: URL 파라미터 (?bin=xxx) → localStorage → 없으면 신규 생성
+  function getBinId(){ return new URLSearchParams(location.search).get('bin') || localStorage.getItem('jsonbin_bin_id') || ''; }
+  function saveBinId(id){ localStorage.setItem('jsonbin_bin_id', id); }
+
   async function loadState(){
+    const binId = getBinId();
+    if(!binId) return null;
     try{
-      const val = localStorage.getItem(STORAGE_KEY);
-      if(val) return JSON.parse(val);
-      return null;
+      const r = await fetch(`${JSONBIN_API}/${binId}/latest`, {
+        headers:{ 'X-Master-Key': JSONBIN_KEY }
+      });
+      if(!r.ok) return null;
+      const d = await r.json();
+      return d.record || null;
     }catch(e){ return null; }
   }
 
   async function saveState(){
     state.updatedAt = Date.now();
+    let binId = getBinId();
     try{
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      setStatus('저장됨 · ' + timeStr(state.updatedAt));
+      if(!binId){
+        // 처음 실행 — 새 bin 생성
+        const r = await fetch(JSONBIN_API, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'X-Master-Key': JSONBIN_KEY, 'X-Bin-Name':'wc2026-game' },
+          body: JSON.stringify(state)
+        });
+        const d = await r.json();
+        binId = d.metadata.id;
+        saveBinId(binId);
+        // URL에 bin ID 표시 — 이 URL을 공유하면 모두 같은 데이터 사용
+        const newUrl = location.origin + location.pathname + '?bin=' + binId;
+        history.replaceState(null,'', '?bin=' + binId);
+        showBinNotice(newUrl);
+        setStatus('✅ 공유 링크 생성 완료!');
+      } else {
+        const r = await fetch(`${JSONBIN_API}/${binId}`, {
+          method:'PUT',
+          headers:{ 'Content-Type':'application/json', 'X-Master-Key': JSONBIN_KEY },
+          body: JSON.stringify(state)
+        });
+        if(r.ok) setStatus('저장됨 · ' + timeStr(state.updatedAt));
+        else setStatus('저장 실패 · 재시도 중...');
+      }
     }catch(e){
       console.error(e);
       setStatus('저장 실패');
     }
+  }
+
+  function showBinNotice(url){
+    const el = document.getElementById('bin-notice');
+    if(!el) return;
+    el.style.display = 'block';
+    el.querySelector('#bin-url').textContent = url;
   }
 
   function scheduleSave(){
@@ -771,6 +824,7 @@
     clearTimeout(saveTimer);
     saveTimer = setTimeout(saveState, 700);
   }
+
 
   function updateCountryDatalist(){
     const elim = getEliminatedSet();
@@ -795,30 +849,29 @@
   /* ---------- Bracket ---------- */
 
   // Layout constants
-  const BKT = { BOX_H:42, BOX_G:16, UNIT:58, COL_W:143, CON_W:20, TOTAL_H:912 };
-  // TOTAL_H = 16*58 - 16 = 912  |  gap=16px gives enough room for date label above each match
-  // TOTAL_H = 16 * UNIT - BOX_G = 828
+  // ─── Bracket layout ── flexbox 방식 (절대위치 없이 모든 환경 호환) ───
+  const BKT = { BOX_H:42, COL_W:143, CON_W:20, TOTAL_H:717 };
 
-  function bracketTop(roundIdx, matchIdx){
-    const step = Math.pow(2, roundIdx);
-    return Math.round(matchIdx * step * BKT.UNIT + (step - 1) * BKT.UNIT / 2);
+  // justify-content:space-around 기준 각 매치 중심 y좌표
+  function itemCy(totalCount, idx){
+    const h = BKT.BOX_H, H = BKT.TOTAL_H;
+    const sp = (H - totalCount * h) / totalCount;
+    return sp / 2 + idx * (h + sp) + h / 2;
   }
 
-  function connSVG(roundIdx, nextCount){
-    const mid = BKT.CON_W / 2;
-    const clr = 'rgba(231,183,80,0.45)';
-    let s = `<svg width="${BKT.CON_W}" height="${BKT.TOTAL_H}" style="flex-shrink:0;overflow:visible;align-self:flex-start">`;
-    for(let j = 0; j < nextCount; j++){
-      const ya = bracketTop(roundIdx, 2*j)   + BKT.BOX_H / 2;
-      const yb = bracketTop(roundIdx, 2*j+1) + BKT.BOX_H / 2;
-      const yt = bracketTop(roundIdx+1, j)   + BKT.BOX_H / 2;
+  function connSVG(fromCount, toCount){
+    const mid = BKT.CON_W / 2, clr = 'rgba(231,183,80,0.45)';
+    let s = `<svg width="${BKT.CON_W}" height="${BKT.TOTAL_H}" style="flex-shrink:0;display:block;">`;
+    for(let j = 0; j < toCount; j++){
+      const ya = itemCy(fromCount, 2*j).toFixed(1);
+      const yb = itemCy(fromCount, 2*j+1).toFixed(1);
+      const yt = itemCy(toCount,   j).toFixed(1);
       s += `<line x1="0" y1="${ya}" x2="${mid}" y2="${ya}" stroke="${clr}" stroke-width="1.5"/>`;
       s += `<line x1="0" y1="${yb}" x2="${mid}" y2="${yb}" stroke="${clr}" stroke-width="1.5"/>`;
       s += `<line x1="${mid}" y1="${ya}" x2="${mid}" y2="${yb}" stroke="${clr}" stroke-width="1.5"/>`;
       s += `<line x1="${mid}" y1="${yt}" x2="${BKT.CON_W}" y2="${yt}" stroke="${clr}" stroke-width="1.5"/>`;
     }
-    s += '</svg>';
-    return s;
+    return s + '</svg>';
   }
 
   function teamRowHTML(roundKey, idx, side, editable){
@@ -833,37 +886,42 @@
     </div>`;
   }
 
-  // 각 경기별 한국시간(KST) 날짜 — 미국 동부시간 +13시간
+  // 각 경기별 한국시간(KST) 날짜
   const MATCH_DATES = {
-    //        r16A───────── r16B───────── r16C───────── r16D───────── r16E───────── r16F───────── r16G───────── r16H──────────
-    round32: ['6/30','7/1', '6/29','6/30','7/3','7/3', '7/2','7/2', '6/30','7/1', '7/1','7/2', '7/4','7/4', '7/3','7/4'],
-    round16: ['7/5', '7/5', '7/7', '7/7', '7/6', '7/6','7/8','7/8'],
+    round32: ['6/30','7/1','6/29','6/30','7/3','7/3','7/2','7/2',
+              '6/30','7/1','7/1','7/2','7/4','7/4','7/3','7/4'],
+    round16: ['7/5','7/5','7/7','7/7','7/6','7/6','7/8','7/8'],
     qf:      ['7/10','7/11','7/12','7/12'],
     sf:      ['7/15','7/16'],
     final:   ['7/20']
   };
 
   function buildBracketSkeleton(){
-    let html = `<div class="bkt-outer" style="position:relative;height:${BKT.TOTAL_H}px;display:flex;align-items:flex-start;">`;
+    const H  = BKT.TOTAL_H;
+    const cw = BKT.COL_W;
+    const bh = BKT.BOX_H;
+    // 컬럼 공통 스타일 — flexbox justify space-around으로 자동 배치
+    const colSt = `flex-shrink:0;width:${cw}px;height:${H}px;display:flex;flex-direction:column;justify-content:space-around;position:relative;`;
+    const mSt   = `width:${cw}px;height:${bh}px;flex-shrink:0;background:#F4ECD8;border-radius:5px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 5px rgba(0,0,0,.2);position:relative;`;
+
+    let html = `<div style="display:flex;align-items:flex-start;width:max-content;">`;
     BRACKET_DEFS.forEach((def, ri) => {
-      html += `<div class="bkt-col" style="position:relative;flex-shrink:0;width:${BKT.COL_W}px;height:100%;"><div class="bkt-col-title">${def.title}</div>`;
+      html += `<div style="${colSt}">`;
+      html += `<div class="bkt-col-title">${def.title}</div>`;
       for(let i = 0; i < def.count; i++){
-        const top = bracketTop(ri, i);
-        const date = (MATCH_DATES[def.key] || [])[i] || '';
-        if(date){
-          html += `<div style="position:absolute;top:${top - 13}px;left:0;right:0;text-align:center;font-size:8.5px;color:rgba(244,236,216,.5);font-family:'Pretendard';pointer-events:none;line-height:1;">${date}</div>`;
-        }
-        html += `<div class="bkt-match" id="bmatch-${def.key}-${i}" style="position:absolute;top:${top}px;width:${BKT.COL_W}px;height:${BKT.BOX_H}px;background:#F4ECD8;border-radius:5px;overflow:hidden;display:flex;flex-direction:column;">`;
+        const date = (MATCH_DATES[def.key]||[])[i]||'';
+        html += `<div class="bkt-match" id="bmatch-${def.key}-${i}" style="${mSt}">`;
+        if(date) html += `<span style="position:absolute;right:3px;top:1px;font-size:7px;color:rgba(24,42,30,.35);font-family:Pretendard,sans-serif;pointer-events:none;">${date}</span>`;
         html += teamRowHTML(def.key, i, 'a', def.editable);
         html += teamRowHTML(def.key, i, 'b', def.editable);
         html += `</div>`;
       }
       html += `</div>`;
-      if(ri < BRACKET_DEFS.length - 1) html += connSVG(ri, BRACKET_DEFS[ri+1].count);
+      if(ri < BRACKET_DEFS.length - 1) html += connSVG(def.count, BRACKET_DEFS[ri+1].count);
     });
-    // Champion box — vertically centered at same position as final match center
-    const champCenter = bracketTop(4, 0) + BKT.BOX_H / 2;
-    html += `<div class="bkt-champ" id="champion-box" style="margin-top:${champCenter - 52}px">
+    // 우승 박스
+    const ct = (itemCy(1,0) - 52).toFixed(0);
+    html += `<div class="bkt-champ" id="champion-box" style="margin-top:${ct}px;margin-left:6px;">
       <div class="bkt-champ-flag" id="champ-flag">🏆</div>
       <div class="bkt-champ-name" id="champ-name">미정</div>
     </div>`;
@@ -1529,6 +1587,8 @@
   (async function init(){
     buildBracketSkeleton();
     setStatus('불러오는 중...');
+    // bin ID가 URL에 있으면 공유 링크 안내 즉시 표시
+    if(getBinId()) showBinNotice(location.href.split('?')[0] + '?bin=' + getBinId());
     const loaded = await loadState();
     state = migrate(loaded) || defaultState();
     propagateBracket();
@@ -1550,6 +1610,8 @@
     }, true);
 
     window.addEventListener('storage', () => pollSync());
+    // JSONBin 실시간 동기화 — 10초마다 최신 데이터 확인
+    setInterval(pollSync, 10000);
   })();
 </script>
 </body>
