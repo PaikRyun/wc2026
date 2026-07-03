@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모빌리티사업본부 월드컵 우승국 만들기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/twemoji.min.js" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --night:#0A2A1D;
+    --night-2:#123826;
+    --gold:#E7B750;
+    --gold-dim:#B8903A;
+    --paper:#F4ECD8;
+    --ink:#182A1E;
+    --red:#C0392B;
+  }
+  img.emoji{
+    display:inline-block; height:1em; width:1em;
+    vertical-align:-.15em; object-fit:contain;
+  }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--paper);
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(231,183,80,.16), transparent 60%),
+      radial-gradient(ellipse 1300px 900px at 50% 0%, var(--night-2), var(--night) 65%);
+    padding: 28px 16px 60px;
+  }
+  .ticket-book{ max-width: 940px; margin:0 auto; }
+
+  .topbar{ display:flex; justify-content:flex-end; margin-bottom:-6px; }
+  .hero-logo{ height:44px; width:auto; opacity:.96; }
+
+  .hero{ text-align:center; padding-bottom:6px; }
+  .hero .eyebrow{
+    font-family:'Black Han Sans'; letter-spacing:.18em; font-size:11px;
+    color: var(--gold); text-transform:uppercase; opacity:.85;
+  }
+  .hero h1{
+    font-family:'Black Han Sans'; font-weight:400;
+    font-size: clamp(24px,5.4vw,38px); line-height:1.2;
+    margin:.35em 0 .25em; text-shadow: 0 2px 0 rgba(0,0,0,.35);
+  }
+  .hero .sub{ font-size:14px; color: rgba(244,236,216,.7); margin:0; }
+
+  .perf-divider{ height:0; border-top:2px dashed rgba(244,236,216,.22); margin:24px 0; }
+
+  .pot-board{
+    display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap;
+    background: linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.08));
+    border:1px solid rgba(231,183,80,.35); border-radius:14px;
+    padding:18px 22px; margin-bottom:26px;
+  }
+  .pot-left label{ font-size:12px; color: rgba(244,236,216,.6); display:block; margin-bottom:5px; }
+  .fee-input-wrap{ display:flex; align-items:center; gap:6px; }
+  #entry-fee-input{
+    width:100px; padding:7px 9px; border-radius:6px; border:1px solid rgba(244,236,216,.3);
+    background: rgba(244,236,216,.08); color: var(--paper); font-family:'Pretendard'; font-size:14px;
+  }
+  .pot-note{ font-size:11px; color: rgba(244,236,216,.45); margin-top:5px; }
+  .pot-right{ text-align:right; }
+  .pot-label{
+    font-family:'Black Han Sans'; font-size:11px; letter-spacing:.15em;
+    color: rgba(244,236,216,.5); display:block; margin-bottom:7px;
+  }
+  .led-number{
+    display:flex; gap:3px; background:#0A1B12; padding:9px 13px; border-radius:7px;
+    box-shadow: inset 0 0 14px rgba(0,0,0,.6);
+  }
+  .led-digit{
+    font-family:'Black Han Sans'; color: var(--gold); font-size: clamp(20px,4vw,28px);
+    min-width:16px; text-align:center; text-shadow: 0 0 8px rgba(231,183,80,.55);
+  }
+  .led-comma{ width:6px; }
+  .led-suffix{
+    font-family:'Pretendard'; color: rgba(231,183,80,.7); font-size:14px;
+    align-self:flex-end; margin-left:4px; padding-bottom:3px;
+  }
+  .prize-table{
+    width:100%; border-collapse:collapse; margin-top:16px; font-size:13px;
+  }
+  .prize-table th{
+    font-family:'Black Han Sans'; font-weight:400; font-size:11px; letter-spacing:.1em;
+    color:rgba(244,236,216,.5); padding:4px 8px; text-align:left; border-bottom:1px solid rgba(244,236,216,.12);
+  }
+  .prize-table td{
+    padding:7px 8px; border-bottom:1px solid rgba(244,236,216,.07); vertical-align:middle;
+  }
+  .prize-table tr:last-child td{ border-bottom:none; }
+  .prize-rank{ font-size:16px; }
+  .prize-pct{ color:var(--gold); font-weight:700; }
+  .prize-amt{ font-family:'Black Han Sans'; font-weight:400; color:var(--paper); font-size:14px; }
+  .prize-note{ font-size:11px; color:rgba(244,236,216,.5); }
+
+  /* 3·4위전 */
+  .third-wrap{
+    margin-top:18px; padding-top:14px; border-top:1px dashed rgba(244,236,216,.15);
+  }
+  .third-label{
+    font-family:'Black Han Sans'; font-weight:400; font-size:11px; letter-spacing:.12em;
+    color:rgba(244,236,216,.55); margin-bottom:10px;
+  }
+  .third-match-box{
+    display:inline-flex; flex-direction:column; background:var(--paper); border-radius:6px;
+    overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.25); width:162px;
+  }
+
+  .settle-panel{
+    background: rgba(0,0,0,.2); border:1px solid rgba(244,236,216,.15);
+    border-radius:14px; margin-bottom:22px; overflow:hidden;
+  }
+  .panel-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 22px; cursor:pointer; user-select:none;
+    transition: background .15s;
+  }
+  .panel-header:hover{ background: rgba(244,236,216,.05); }
+  .panel-header h2{
+    font-family:'Black Han Sans'; font-weight:400; font-size:19px; margin:0; color: var(--gold);
+    display:flex; align-items:center; flex-wrap:wrap; gap:8px;
+  }
+  .panel-toggle{
+    font-size:20px; color: rgba(244,236,216,.55); transition: transform .25s;
+    flex-shrink:0; line-height:1;
+  }
+  .panel-body{
+    padding:0 22px 20px;
+    display:grid; grid-template-rows:1fr;
+    transition: grid-template-rows .28s ease, padding .28s ease;
+  }
+  .panel-body.collapsed{
+    grid-template-rows:0fr; padding-bottom:0; padding-top:0;
+  }
+  .panel-body-inner{ overflow:hidden; }
+  .panel-header[aria-expanded="false"] .panel-toggle{ transform: rotate(-90deg); }
+  .settle-panel .hint{ font-size:13px; color: rgba(244,236,216,.6); margin:0 0 14px; }
+  .settle-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .settle-row input{
+    flex:1; min-width:150px; padding:10px 12px; border-radius:8px;
+    border:1px solid rgba(244,236,216,.25); background: rgba(244,236,216,.08);
+    color: var(--paper); font-family:'Pretendard'; font-size:14px;
+  }
+  .settle-row input::placeholder{ color: rgba(244,236,216,.4); }
+  button{ font-family:'Pretendard'; cursor:pointer; }
+  .primary-btn{
+    background: var(--gold); color: var(--ink); border:none; padding:10px 20px;
+    border-radius:8px; font-weight:700; font-size:14px;
+  }
+  .primary-btn:hover{ background:#f0c568; }
+  .ghost-btn{
+    background:transparent; border:1px solid rgba(244,236,216,.3); color: rgba(244,236,216,.8);
+    padding:8px 16px; border-radius:8px; margin-top:12px; font-size:13px;
+  }
+  .ghost-btn:hover{ border-color: var(--red); color: var(--red); }
+
+  .survivor-badge{
+    font-family:'Pretendard'; font-size:12px; font-weight:600; color: var(--gold);
+    background: rgba(231,183,80,.12); padding:3px 10px; border-radius:12px;
+  }
+
+  .participants-list{ display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+  .participant-row{
+    display:flex; align-items:center; gap:10px; background: rgba(244,236,216,.06);
+    border:1px solid rgba(244,236,216,.15); border-radius:8px; padding:9px 12px; font-size:14px;
+  }
+  .participant-row .p-flag{ font-size:17px; flex-shrink:0; }
+  .participant-row .p-name{ font-weight:700; min-width:64px; }
+  .participant-row .p-country{ flex:1; color: rgba(244,236,216,.8); }
+  .participant-row .p-tag{
+    background: var(--red); color:#fff; font-size:11px; font-family:'Black Han Sans'; font-weight:400;
+    padding:2px 8px; border-radius:4px; letter-spacing:.05em; flex-shrink:0;
+  }
+  .participant-row.eliminated{ opacity:.45; }
+  .participant-row.eliminated .p-name, .participant-row.eliminated .p-country{ text-decoration: line-through; }
+  .participant-row .p-delete{
+    background:none; border:none; color: rgba(244,236,216,.4); font-size:15px; cursor:pointer; padding:2px 4px; flex-shrink:0;
+  }
+  .participant-row .p-delete:hover{ color: var(--red); }
+  .empty-note{ font-size:13px; color: rgba(244,236,216,.5); text-align:center; padding:14px 0; margin:0; }
+
+  /* ── Bracket ── */
+  .bracket-wrap{ overflow-x:auto; overflow-y:visible; padding:32px 0 14px; }
+  .bkt-outer{ position:relative; height:717px; display:flex; align-items:flex-start; }
+  .bkt-col{ position:relative; flex-shrink:0; width:143px; height:100%; }
+  .bkt-col-title{
+    position:absolute; top:-28px; left:0; right:0; text-align:center;
+    font-family:'Black Han Sans'; font-weight:400; font-size:10.5px; color:var(--gold);
+    letter-spacing:.10em; line-height:1.3;
+  }
+  .bkt-match{
+    position:absolute; width:143px; height:42px; background:var(--paper);
+    border-radius:5px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,.25);
+    display:flex; flex-direction:column; transition: box-shadow .15s;
+  }
+  .bkt-match:hover{ box-shadow:0 3px 8px rgba(0,0,0,.35); }
+  .bkt-team{
+    height:21px; display:flex; align-items:center; padding:0 3px; gap:3px;
+    color:var(--ink); position:relative; flex-shrink:0;
+  }
+  .bkt-team:first-child{ border-bottom:1px solid rgba(24,42,30,.12); }
+  .bkt-team.winner{ background:rgba(231,183,80,.32); }
+  .bkt-team.loser{ opacity:.38; }
+  .bkt-flag{ font-size:11px; flex-shrink:0; line-height:1; }
+  .bkt-name{
+    flex:1; font-size:10.5px; color:var(--ink); overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap; font-weight:500;
+  }
+  .bkt-input{
+    flex:1; border:none; background:transparent; font-size:10.5px;
+    color:var(--ink); padding:0 2px; min-width:0; font-family:'Pretendard';
+  }
+  .bkt-input::placeholder{ color:rgba(24,42,30,.3); }
+  .bkt-input:focus{ outline:none; }
+  .bkt-adv{
+    font-size:8px; background:transparent; border:1px solid rgba(24,42,30,.2);
+    border-radius:3px; padding:1px 4px; cursor:pointer; color:var(--ink); flex-shrink:0; line-height:1;
+    transition: background .12s;
+  }
+  .bkt-adv:hover:not(:disabled){ background:rgba(24,42,10,.12); }
+  .bkt-adv:disabled{ opacity:.18; cursor:not-allowed; }
+  .bkt-team.winner .bkt-adv{ background:rgba(231,183,80,.25); border-color:var(--gold-dim); font-weight:700; }
+  /* 취소 버튼 */
+  .bkt-undo{
+    font-size:8px; background:rgba(192,57,43,.15); border:1px solid rgba(192,57,43,.5);
+    border-radius:3px; padding:1px 4px; cursor:pointer; color:#c0392b; flex-shrink:0; line-height:1;
+    transition: background .12s; display:none;
+  }
+  .bkt-undo:hover{ background:rgba(192,57,43,.28); }
+  .bkt-team.winner .bkt-undo{ display:inline-block; }
+  .bkt-champ{
+    flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:4px;
+    background:rgba(231,183,80,.13); border:2px solid rgba(231,183,80,.4);
+    border-radius:8px; padding:12px 8px; text-align:center; align-self:flex-start;
+    width:62px; margin-left:6px; transition: border-color .3s, box-shadow .3s;
+  }
+  .bkt-champ.decided{ border-color:var(--gold); box-shadow:0 0 14px rgba(231,183,80,.35); }
+  .bkt-champ-flag{ font-size:20px; line-height:1; }
+  .bkt-champ-name{ font-family:'Black Han Sans'; font-size:10px; color:var(--gold); word-break:keep-all; }
+
+  /* ── 관리자 비밀번호 모달 ── */
+  .pw-overlay{
+    position:fixed; inset:0; z-index:900; background:rgba(0,0,0,.65);
+    display:flex; align-items:center; justify-content:center;
+    animation: overlayIn .2s ease;
+  }
+  .pw-box{
+    background:var(--night-2); border:1px solid rgba(231,183,80,.4);
+    border-radius:14px; padding:28px 28px 22px; width:min(320px,88vw);
+    box-shadow:0 16px 48px rgba(0,0,0,.5); display:flex; flex-direction:column; gap:14px;
+  }
+  .pw-box h3{
+    font-family:'Black Han Sans'; font-weight:400; font-size:17px;
+    color:var(--gold); margin:0; text-align:center;
+  }
+  .pw-box input[type=password]{
+    width:100%; padding:11px 14px; border-radius:8px;
+    border:1px solid rgba(244,236,216,.3); background:rgba(244,236,216,.08);
+    color:var(--paper); font-family:'Pretendard'; font-size:16px; letter-spacing:.18em;
+    text-align:center;
+  }
+  .pw-box input[type=password]:focus{ outline:none; border-color:var(--gold); }
+  .pw-box .pw-err{
+    font-size:12px; color:var(--red); text-align:center; min-height:16px; margin:-6px 0;
+  }
+  .pw-box .pw-row{ display:flex; gap:8px; }
+  .pw-box .pw-row button{ flex:1; padding:10px; border-radius:8px; font-size:14px; font-family:'Pretendard'; cursor:pointer; border:none; }
+  .pw-box .pw-confirm{ background:var(--gold); color:var(--ink); font-weight:700; }
+  .pw-box .pw-cancel{ background:rgba(244,236,216,.1); color:rgba(244,236,216,.8); }
+  /* ── 참가자 카드 ── */
+  .p-cards-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(130px,1fr));
+    gap:12px; margin-top:12px;
+  }
+  .p-card{
+    background:rgba(244,236,216,.09); border:1px solid rgba(244,236,216,.18);
+    border-radius:12px; padding:14px 10px 12px; text-align:center; position:relative;
+  }
+  .p-card.eliminated{ opacity:.4; }
+  .p-card.eliminated .p-card-country{ text-decoration:line-through; }
+  .p-card .p-card-prize{
+    display:inline-block; font-family:'Black Han Sans'; font-weight:400; font-size:11px;
+    padding:1px 8px; border-radius:10px; margin-bottom:6px; letter-spacing:.05em;
+  }
+  .p-card .p-card-prize.p1{ background:rgba(231,183,80,.22); color:var(--gold); }
+  .p-card .p-card-prize.p2{ background:rgba(180,180,180,.2); color:#ccc; }
+  .p-card .p-card-prize.p3{ background:rgba(180,120,50,.2); color:#cd7f32; }
+  .p-card-flag{ font-size:32px; line-height:1; margin-bottom:6px; }
+  .p-card-country{ font-size:12px; color:rgba(244,236,216,.7); margin-bottom:5px; }
+  .p-card-name{ font-family:'Black Han Sans'; font-weight:400; font-size:20px; color:var(--paper); }
+  .p-card-actions{ display:flex; gap:6px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
+  .p-card-actions button{
+    font-size:11px; padding:3px 10px; border-radius:6px; cursor:pointer;
+    font-family:'Pretendard'; border:1px solid rgba(244,236,216,.25); background:transparent;
+    color:rgba(244,236,216,.75);
+  }
+  .p-card-actions .p-edit{ color:rgba(231,183,80,.9); border-color:rgba(231,183,80,.35); }
+  .p-card-actions .p-del{ color:rgba(192,57,43,.9); border-color:rgba(192,57,43,.35); }
+  .deadline-notice{
+    margin-top:10px; padding:10px 14px; background:rgba(192,57,43,.12);
+    border:1px solid rgba(192,57,43,.3); border-radius:8px;
+    font-size:13px; color:rgba(244,236,216,.75); text-align:center; display:none;
+  }
+  .deadline-badge{
+    display:inline-block; background:var(--red); color:#fff;
+    font-family:'Black Han Sans'; font-weight:400; font-size:11px; letter-spacing:.08em;
+    padding:2px 10px; border-radius:10px; margin-left:6px; vertical-align:middle;
+  }
+
+  .reveal-overlay{
+    position:fixed; inset:0; z-index:999;
+    background: var(--night);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:0; cursor:pointer;
+    animation: overlayIn .45s ease;
+  }
+  @keyframes overlayIn{ from{opacity:0} to{opacity:1} }
+
+  .reveal-overlay .ov-eyebrow{
+    font-family:'Black Han Sans'; font-size:clamp(13px,2.5vw,18px);
+    letter-spacing:.25em; color: rgba(231,183,80,.7); margin-bottom:24px;
+    animation: fadeUp .6s .1s both;
+  }
+  .reveal-overlay .ov-flag{
+    font-size: clamp(64px,14vw,110px); line-height:1;
+    animation: popIn .55s .25s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  .reveal-overlay .ov-country{
+    font-family:'Black Han Sans'; font-weight:400;
+    font-size: clamp(28px,8vw,64px); color: var(--gold);
+    margin: 12px 0 0; letter-spacing:.06em;
+    text-shadow: 0 0 40px rgba(231,183,80,.5);
+    animation: popIn .55s .38s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  .reveal-overlay .ov-divider{
+    width: clamp(160px,40vw,320px); height:2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin:28px 0; animation: fadeUp .5s .55s both;
+  }
+
+  /* winner name cards */
+  .reveal-overlay .ov-winner-wrap{
+    display:flex; flex-wrap:wrap; gap:16px; justify-content:center; padding:0 24px;
+    animation: fadeUp .6s .65s both;
+  }
+  .reveal-overlay .ov-winner-card{
+    background: linear-gradient(135deg, rgba(231,183,80,.22), rgba(231,183,80,.06));
+    border:2px solid rgba(231,183,80,.55); border-radius:14px;
+    padding:18px 32px; text-align:center;
+  }
+  .reveal-overlay .ov-winner-name{
+    font-family:'Black Han Sans'; font-weight:400;
+    font-size: clamp(32px,8vw,72px); color: #fff;
+    text-shadow: 0 2px 0 rgba(0,0,0,.4), 0 0 30px rgba(231,183,80,.6);
+    letter-spacing:.04em; line-height:1.1;
+  }
+  .reveal-overlay .ov-winner-amount{
+    font-size: clamp(14px,2.5vw,20px); color: var(--gold);
+    margin-top:8px; font-weight:600;
+  }
+
+  /* dinner mode */
+  .reveal-overlay.dinner-mode{ background: #1a0f00; }
+  .reveal-overlay.dinner-mode .ov-eyebrow{ color:rgba(224,116,58,.8); }
+  .reveal-overlay.dinner-mode .ov-country{ color:#e0743a; text-shadow:0 0 40px rgba(224,116,58,.5); }
+  .reveal-overlay.dinner-mode .ov-divider{ background:linear-gradient(90deg,transparent,#e0743a,transparent); }
+  .reveal-overlay.dinner-mode .ov-winner-card{
+    background:linear-gradient(135deg,rgba(224,116,58,.2),rgba(224,116,58,.05));
+    border-color:rgba(224,116,58,.5);
+  }
+  .reveal-overlay.dinner-mode .ov-winner-name{ color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.4),0 0 30px rgba(224,116,58,.5); }
+  .reveal-overlay.dinner-mode .ov-winner-amount{ color:#e0743a; }
+
+  .reveal-overlay .ov-close{
+    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+    font-size:13px; color:rgba(244,236,216,.45); letter-spacing:.1em;
+    animation: fadeUp .5s 1s both;
+  }
+
+  @keyframes fadeUp{ from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes popIn{ from{opacity:0;transform:scale(.4)} to{opacity:1;transform:scale(1)} }
+
+  .reveal{ text-align:center; padding:30px 16px; min-height:110px; }
+  .reveal .placeholder{ color: rgba(244,236,216,.5); font-size:14px; line-height:1.7; }
+  .prize-result{ display:flex; flex-direction:column; gap:10px; max-width:560px; margin:0 auto; text-align:left; }
+  .prize-result-title{ font-family:'Black Han Sans'; font-size:18px; color:var(--gold); text-align:center; margin-bottom:4px; }
+  .prize-tier{ background:rgba(244,236,216,.07); border:1px solid rgba(244,236,216,.14); border-radius:10px; overflow:hidden; }
+  .prize-tier-head{ display:flex; align-items:center; gap:8px; padding:10px 14px; background:rgba(0,0,0,.15); }
+  .prize-tier-rank{ font-size:18px; flex-shrink:0; }
+  .prize-tier-flag{ font-size:17px; flex-shrink:0; }
+  .prize-tier-team{ font-family:'Black Han Sans'; font-size:14px; color:var(--paper); flex:1; }
+  .prize-tier-pct{ font-size:12px; color:var(--gold); font-weight:700; flex-shrink:0; }
+  .prize-tier-body{ padding:9px 14px; font-size:13px; color:rgba(244,236,216,.8); line-height:1.6; }
+  .prize-tier-pending{ color:rgba(244,236,216,.4); font-style:italic; }
+  .stamp{
+    display:inline-block; font-family:'Black Han Sans'; font-weight:400;
+    font-size: clamp(24px,5vw,38px); padding:14px 30px; border:4px solid currentColor;
+    border-radius:10px; transform: rotate(-6deg); letter-spacing:.03em;
+    animation: stampIn .45s cubic-bezier(.2,1.4,.4,1);
+  }
+  .stamp.win{ color: var(--gold); }
+  .stamp.dinner{ color:#e0743a; }
+  @keyframes stampIn{ from{ transform: rotate(-6deg) scale(2.1); opacity:0; } to{ transform: rotate(-6deg) scale(1); opacity:1; } }
+  .reveal .detail{ margin-top:18px; font-size:15px; line-height:1.8; color: rgba(244,236,216,.85); }
+  .reveal .detail b{ color: var(--gold); }
+
+  .confetti-piece{ position:fixed; top:-12px; width:8px; height:14px; opacity:.9; z-index:50; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ to{ transform: translateY(110vh) rotate(540deg); opacity:0; } }
+
+  .footer-bar{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+    font-size:12px; color: rgba(244,236,216,.5); margin-top:6px;
+  }
+  .footer-bar .btn-group{ display:flex; gap:8px; }
+  .footer-bar button{
+    background:none; border:1px solid rgba(244,236,216,.25); color: rgba(244,236,216,.7);
+    padding:6px 12px; border-radius:6px; font-size:12px;
+  }
+  .footer-bar button:hover{ border-color: rgba(244,236,216,.5); color: var(--paper); }
+  .footnote{ text-align:center; font-size:12px; color: rgba(244,236,216,.4); margin-top:18px; line-height:1.6; }
+</style>
+</head>
+<body>
+<div class="ticket-book">
+
+  <div class="topbar"><img class="hero-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANIAAADwCAYAAAB1/Tp/AABQAklEQVR42u29Z3McSZYteNxDpxZAQgPUVSyyFEu2mO6esXmzO8/2y/uda7YfdveZzc57M2+6e6q6q7o0i5pFAa0zkTKUu+8H94hMgACRABKECjejFYtIZGZE+PF777n3nkuEEALJSlayjrRocguSlayjLz25BWdtCUQ+BCEkuR1nCUhCdB/eYRchBGfxucvrPvj1H9f1Cg4wLr+Mpr05MA1iD5y1dZBnuC+QuBDgXCAMubqZ0d3s7xMoJdAogabRM3eCCnXtjAswxnuAtbe1IISoa6bqmgf3fbj6Ho2WB86BXMaEYejHekBFAGKcgzFxqD1w1iw+QEApoOsaKCWgfdxgfb+39LwQtXoHc0t1tNp+fHP7XZapI5OxMDqUQTHvwNDPDqCCgGOr0cHqRhubW22EjEPw11+7YWjIpEyMDGUwXM5AHyCYBASCkKFWd8G4gGPr0HVxrPeTCwHXC7Gy1sTyehO+H4Lz822aBIB8xsbYSBbFvIOUbRwRSFygWu/g+3tL+D//35/wbK4KSgn4AYBUyDm4Ml3CP/3dNXzy3iQKWRuGoZ2JG9pse3jwdA3//pfn+OsP8/A8H4zz17qBuayNq9Ml/ONvr+EPn11B2jGgaYPZ6EIAQchRb7oIGUelnIn//biw5Pscaxst/NsXv+Bf/vgYWw0XfsjVdjuH7hwAxoB3blTwf/zDW/jw9jhSo/mju3aeH2Kj1sL9p2u4/2QVmkaVRervRqZTFpZWmygVUijlHdy8VkHe0I714Q9iwxIiN2217uL5fBU/PVhCp+ODcbbnIxBCoFhIgTOOD94ZQxgyCKEPzAUSQoAxgbYbIgwYGOPqu4pjc7Mii7S0WsfPj5axUevAD1jP2X3+4qIwFNA0is8/mITvhUePkQS6/rHnB+i4ATRdOxCQvIAjCAW++3kRlWIKlXIGjm3A0OmZ8LEZY/ADBtcL0fGCfS2S44bwfKZeN+CNJuTG9rwQfiBjlmOPVYSA4NKldN0QrhfCC9j5tUiEgIUCnh8iZKxvN7ZP1k4GupwLEC4OBCTOOVptD/efrCKfsXBlpoxM2sJQMXVmWDzOhSRdFPnw2vukXnccDJdQ99MPJFjlg+ag9HhdZUlcEnB098H5BZK8xoOylG8gjyQQMo7F5TruPlzF1z/OIZsxkU2bsCy9L0YkWdvdO99ncL0AYcgOFK8OIn5A8rxOCkiA4ByuH2BuuYp//dNTZFMmpsbyGC6lYZlJTvhArh0HgpDB95nMJ4nIZiQb/CQXfUPPH1wINFo+nrzYwFc/zOMv385ifbN9TkPW47qP0uUIAg7fZwgZf6MWKVknbJEityAMGTZqHfz4cBn5nI2R4SyKBQemoUHXkrK/fuNVP2Tww14gJdboQlikXv+ec4al1Qa+ubuIb36ax9MX6/D9MHkSfYKIcY4gkEwijxPEiVW6MBap10FptFzMLtbw7b1FDJfTKOQcjGr02MtdzvqKSrX8kCEIGEL2ZurfhOimQoQQCrZkYAAmA9lVgw9HhOj/fd84kKKH0up4uPtoBaV8CjMTBaRsA8UChUYSF29PIAkeEw1+wMCYwHFX60SOIyGyXlLXNfWZYrB7QggIzvt+16iglO7cL0dEJSEEoRDQKAU9wHudDGUmAN9nWFyu497jFVyZKiKbtpDLWKA6AaGJWdrLNQ5Z17WTlQ3HGyNRQmCYGor5FKYnC8jmbATB4JLNQiWYW20fjZaHoI/yI0IILFNDyjGRTdswDW1gt4AQIAwFJkZzyGbVe59aICk3pd508Xyuir9+P4fR4QzGR3Io5h2YVEtQs+s9Axjj8CMgca6Sv8dXuKppFGnHwJWZEn7z0TSa7QAhG1RcJqvZ1zZamFvcwrPZTTRaXuxW7fmdKEE2bWFiNI9rl8rIZ52B1TNGe/PSVBETI3k4fRSsniiQJPEArG228Lef5jE5lsPMZBHvXKv0fQpcSLIhFPADhsCXrt1xB0mGTlEqOPjs/UncuDQkK+AH9JkCAp4b4N7TVXz53SzWa200Oz4Ef53rSEA1DeViGu/fHMU//+EGZiaKMA1tYIeJEEDKMVAq2MimrdMNpAhMrhdgdaOFb+8uYbicQSFrq4ppCpq4eDtiJIFgh2vHj5n9ppTAMnUMl9IoF9Oy9m6A7992fTQ7AR49W1dg6IecILAtHaVCCpcmS7hxuQzL0AcaElACaBrpG5wnXlYgBOAHDPefrMDQCa7NlFDMOygXHZhET1IkvfcqYu0ChiBkCLnAm9CukUQDgaaoh0F+pGFo0DXZPEditmC/D+g2UBo6ga5T6AYdaLmZfKsBdsi+CeaBc46tpouns1X8r788h2lo+M3HMyhkZZdpsroWKWSyqsH3I4sk3kiFULSxun8fHJkRf3lykF2jSHhK4i7Wk/RgTkWhmxACfsCxUW3jbz/No5i3MTmagzZdQj5rJyIfvRYpJhtkmb/gyX05DevUVIxSIuD7AZ7NbuK7nxcxPZ6HY5tIpyzoWqKYIy0SFJBkTxBnb8a1S1Yf+/e4Lc1BnnPIOBotH8/mqvjqhwU8fr6OWr2DkCXHbuzaRZUN4ZtJyCbrBC2SrlPoOgUFAWMCfhj2BSjZSs2xut7CD/eXcXmqgImRLKwrwzAyCSUu7w+DH3CEIQfjPLFI5xVIhBBk0zZKRRsZ28JWw8P8Sh1h2F97shCyo3ZusYZv7y5iqJhGuZRGyjGgUXKhXTzJ2sk/QShUrV0CpPNpkQiBbesYKWdx69oI1jZbaLkBavUOgqC/Ku+QMdSbLh48XUWp4ODqdAlpx0C5mIZ2gUMlLoTUl+MCjMu2c574ducRSF2LkctY+M0nM9istbG4WscvLxk2t1jfJyjjDPPLdfxwfwlXp0vIZSxk0zZsS7uwVimq/ma8qx+RWKRzHCMJDugaxXgli4mRLF7MT8HzGZrtAEHYn8CgEIDrhVhYruNPX71ALmNjZDiD0eEsbOtitqcLAYRKfIRzJEA690BSRZQpx8DIUAaffziF5bUm1jZa2Ki14PXRyBdtkK2Ghx8fLmO4nMbMeB6GoWFsOAtCyYUreohYO8YjmbQESOcaSNLJkxnwcjGF22+N4MV8FUtrdbQf+vD8fnXRIoleDz/cX0I2ZSKft1HM2bAsST5cpMWY0lsLpVBkF1RJu/m5BVL0XB3bwFglhw9vjWNto43l1SbanQBB2F+8JARHEIZYXK3ju/tLeOvaMMrFFC5PFZGyzYsFJN4jesK5cvOSRvPzDSSFJkoJ0o6JW9dH0Gj6uP90DfWGh/VaG4yxfp0aNFo+Xi5u4W8/LaBcTKGYc2DqGjRNuzDt6YzJFgoWSiku+V+OxLs790CShkmjBEOlNN65XsEfPr8M3w/x1Y/z6HiyvbifIJsxjmbTw73HKxgqOpgZL8A0NZTyqQvD4nEu4CsQRQweZxwJki4AkAQAQgFL1zA+ksWvP5rCRq2NxdUG5pe30Gz7IH3GS14QYm5pC3cfreDqTBnZrIVM2oJlXAxKPGRcShWrWVUhk2VCCYwuAJCkVZKbPOWYeOfaCNY3O1hZa8L1gnjmUn8nshyy9WK+hi+/m0WlnMHkaB5axjozo2KOZpE4PE9WfUONeGFJkHRxgBR/mEaRy1i4eX0Y1folrG40UW96qDc9hCHbN9aJxD/Wq238+GAZU6N5jI9k8e5boyhcBCAxgSBgYKEAoVJwk3GREHYXDUiEAJRSTI7m8NkHU3j6ooq1zTaePF9Ho81B+mljFgKttofZhRq++XkBlaE0KuU0MilT1uKdY0o8VJMoQs6ggSJkqroh2ccXC0gRmGxTx0g5g8/en0Rtq4PNahteEMpavD6rxP2A4cGTVZi6hkuTBeSyNoaKaRjnGEhyTlWIMOSADkk2KCH90zy47SIsehJA0jSKTMrE21eHcef2GK5dKqGUd0Bp/1+Hc461zTYePF3Dl9/N4aeHy6g33Xho8rkEEpMjXSRbp8iGuJUisUsXyiLFH6xTjFYyuHm9gjvvjmOr6WKr4cETQZ+1ePI1tYaLP3/1AinbxNhwDqauIZO2zuXpzFk3Iavrstcrce0uqEWKP5hK4cGZ8Tx+fWcGt66PoJRPwTB0iL6jZynn9WKxhh8fLOPbu/NYWKkjCM9nkpJxlZBVtLfskk26hy80kCIXr1xM4b23RvDR7XHcvDaMbNpCj65MH+4OR73h4enLdfz1+3k8fbGBesOVccS5c+0U2RCVCDGRFK5edNcuWqahY7icwWcfTKHVDrC01sBmtQNAQIh+qh5k+/Xqegvf3VvEzGQBEyM5WJfKMAzrfAFJiB7xfCFHX7LuvNOEbLjAQKKUwLF1XJkuodUJcP/pKtrtAAsrdfhBf1ZFCIFm28PcUg3f31vE6FAapWIKjmNAo/TcbDAeStYuUliNGvySlQApXoWcg7evDuH3n15Gs+2j3vJQq/O+C1vDkGGr7uLuwyXksxauXSojl5ETLs6LyGTE2knNb/Q09yUb+cLGSNvjJSkNm01b+Pi9Cfz6zjSuXSohn7EOVEMXMoal1SZ+eriCL759iSfP16WU1znZaCHnUs9OuXIh4z0DmZOVWKQ4XtIwM1HA+zdH8cvsJtqdAB0vhOcHfbenN9s+Xi7U8OW3syjlUhitZFEpZ85FezrnkqmLrFDIRFK0mgBpt3iJwrF1XJos4rcfz2C92sb6ZgubNX6A9nSCRtPD9z8voZRPY3Isj4/e1TAynD2zJWlRAyzjIh4uJhTZwNQc2cS9S4DU4+JJSnyolMatGyN4Pl/F8loDPz+SEr397RYBPwixUWvjp4dLKBdt5DMWMilLkQ9nD04CshNWtk3sABIXSGxSAqRd46V0ysDUWB4fvDOGlfUmllabaHUCBEHYZ3u6dIFezFfx568prkyVMDyUwdRYHo6tn7neJSEkmRKGHFzIOauRDjhj0dzVRLchAdJOF49QpBwDt2+MoNH08OiXNdTqHWxucYh+29OFQNsNsbjaxNc/zqNUSCGXsWCZaVBKzhQlHhXpBkHXAgmlKDTICXrJOmdAIkSOXBwZyuDW9Qo+/3AKrbaPHx+uoN2R85T2d4fkKV5vurj3ZA3D5TSuTBVhmRoKOUc2G54RMAku+5CCOAGLGEhR0WoCpQRIe7p4hq5hfCSHf/zNNVX10MTSKofrBX2ewnJUzOxCFT89dHD9UhmZtIl02oKpU5wVZTwBWR7EQhkrIQJSHDMhocBP2os6zV+OECCTMnH98hA++3AKv74zjdGhDAjpf14S40K2p89t4otvXuLB0zVZi3eGij2FEAgCrqhvKXYiolbzMGHsEovUxzIMDeWCg9vXR1CttbG83kC13kGz7asJF/0RD6sbLXx/bwnT43lMTxTw9tVh5LPaGQESEKiZSFEOiSt3L0zkuBIg9W02KcHYSBYfvzeJ5/M1VGsdPPhlDUHA+iYNOl6AhZUG/vrDAvI5B8PlDPJZ+0wUe8rDgCNQDX3Sk4smU3D1fwmaEiD14eOlU6ZMrt4ex9pGC+vVDkLW6JsSZ4yj2fHx6Nka0o6Bt64MIe0YKBVSMHR6yoEUWSQOpnJIkoDgcV4pWQmQ9scRpMhkNmXi9o0RbNY6eDZbQ8cLsVFt9V3YKrjA8loT399bwp+/fol0ysIn700imzZPtSh/pJ4k80jy36IJ54wlMVICpIN+WZ1ipJLBO9eH8fF7Y2i0XNTrLnifIyCFkPHEVtPFF9/OIpu2UCmncXmyiEzaOrV0uCQbGELGwJmq8IgTsuLAs3qTdcGBRClFNmVheryAT9+fwPJaA0urDaxXW/D8oF8vEZ4X4smLdQyX0rh2qQTHNnDJ0qHr9FRWPcicGEcQsFijQVY78C79nawESAcIlQAQlIspfHh7AkurDSws1+E+DOH6YZ/SxwAXHM22j19mN/Hnv71EIZ9CuZBCNmPC0E8fkxdR3UEo4tlIXEjyIWRcNvclYEqAdFAwWZaOSjmNj96dQLXuYr3WQaPtSeKhj3YLSSEzrG408cP9JcxMFjA2nMH1S2U1Pf101a3FVQzK+sgSIcTV3wmIEiAdzsUjBLZl4O2rFQShwMNn66jWOljZaMIPwr6qxIUQqDdcPJut4sf7yxiv5DBUlu3p9JQQDxGcI4vUSzYIwVVjH09wlADpaGDKpE1cmS7in357DUHA8D//86lUayX9dVwwztFse/jp4RKyGRNXZ4rIZWxk0+apSi7JPJJUD4oQLgTAwh6yIdnLJ7sfz+oXJ0SK8pcKKXx0exyfvj+FK1M97emk/w06v1zHTw+X8befFvB8dhOBf0rKh0RPjBRI+S0520NGg1FCNsklJRbpyMvQKWYmCrhzawzP5zbhBQzt5+tSqgr9uXhtV7an/9sXT5FJmRir5DBspE/NKR+VOUn9CXlCCC6r4IOQww9ZoiaUAOloS9MIHMfE9GQBn384hdX1FjaqbWxuteH31Z4uN2W96eLnx2sYGZrDxEgeH783Hv+81zqcKNkQbj8a5NQ+FtPiyUqAdHgXDwSUAMPFNN67OSqnp6/W4XohgqC/gc+EAL7PsLhSx48PllEpp1EuORgupcG5OHHiIW6j6AFLxNwxlV9KXLsESAOJl9KOgcmRAj5+dwIb1Q6W1ppotD1wxvtuT+ec4+VCFX/6+gVmJoq4db0SB/gnuU1liZBQBarbrWnIZM0dTyTAEyANxsWjyGbkqJhqvYPHz9fQ6nhY32z3fVoLIVBveng2V8W3Py+AMQ5Nk1MfTjZGAoIwRBAyaZ8I6Wnu4/ADnrh2CZAGCCZKMDGawwc3x5TOg4tGM4Dr+X2DiTGGRsvDjw+X4fkMlyby6LjBiV4X5wK+HyIMmeqG5RAgEJBACkIGLhKTlABpQItSAko1jAxl8fe/uopm08fKWgtLaw24Xn9Dn4UAfD/E3MIWwoBjs9bG/HJdDkA+QQcvDEXX6hAioyQhde6CgCPBUQKkga9sxsTtt0axstbEi/kaGGNYWA1VaVA/JUQctXoHQciw1XTRVt24bz4OkXkjzgUCxhGGveIMJC5cDYIwob8TIB3DRanp6e/dHEOj6aHR8rDVdNFsB331LkV1bI2mi47rq6TnScwhknwh4xx+wJT0Vhdjkf63H4R9KSslKwHSwbYfITB0grFKBh/cGsOTlxvYrLfx6NkGWm3el4vGhVBzWk9yg0qLxJhAEITbNCoE0HXtQt5XsW6yEiAdfAsKqUA0PVHAx+9NYL3WwtpGW57s4dnKu3DxKpCAbqLWD5LKhgRIx2aVutPTb92oYKPaxi8vq+h4ITZrrTPTDBflt6Q+g9h2UghOEIZMuXa9NixZCZAGvExDw0Qlj1s3RvDhrXU0mh6aLQ+eH54JqyQEpIsZciW91a20EIgSshfQIokoUMSp6Mc690CilCKTNnFpooDffDSDtY02llYa2Kz3V4t3wnYVQshkqx8ysHjAtIj3T8g4vIB3yYZjMknRoTNovG5jUg/63oKobmE1AnSA4WzURdOv9MC5B1KkylrKp/DuWyOYX6pjZa2B7+8vYd0NQU91I4mI2yWk9jfvDktSpzFjvJuoPSaLCIjtE9TF4K7O82XFRtRC39+FyMqOiM30fSabSwbYQ0apZH/7Hbhw7oEULdvW1dCxcWzUWlhZb6LR8sHC05uDicTyuRKIZIxt38Nq+FhwjCVCXMi5tRu1NtY3213Z5IGYPQHXC/Fstoq1jRa8gPWFUSE4Ol6Atc0WnrxYh+eHMHRtYEASEMimTAyXM8hlrL6mPV4YIFFKYBkabl4bBuMCz2arqDVcrKw3wYPT6+IJoYYwR419OxTzGRfwQ35sh0EQMmzW2vjy25f409fP0Wh6CEI+MO8xZAKbtTaW1xqo1TtKWu312zxkDKvrTXz70wI2NlvIpC1oGhnMUAQirfy1mTL+/ldXcOv6CEYr2QRIO8FUyqdw4/IQfvfpJbTaPr749qWann56E5qxzvcr35Eoi3R8rh1nHK2OjxdzVXz1/Rw2ay78WCr6iB8qZKevH0gVKLfPmkYuBJptD8GytJTSGg0uLg1DjkbLx1tXh3B5qpTESK/GS/Ju57MWfveJBNKL+Sr8gKHV9k9ldYBMuioghfwVjW8W690dz3fnUZVHy8PqegubWy78gGOQVFkk3Nm39kSs6Reg44YAIQMb0UOIrGvcrLlod4K+E/IXCkjRsgwNYyM53H5rBJ9/MIWQcTx9uYEgEKeOEt+pYbczSGKsO+n8WA6fXheTS7cqjMusTu5eRZUdgzbFhMh7GvV+9QtPehGBRClFJmXg8mQRn304hRuXh1DMOzCM0ygOKdmygDHwV05H+cBlG8Wx2nIQAHTbXKrznbc6qH27kBaJEAmm4XIGd26NY25pCyvrDTzwQkWlnh55K86la8eYypXs+GacS0YvaTU/2aVf1AsnBEinDEyM5vHhO+NY22xhZa2FZktWe5+WGiIJpEhhlSDOIam/My6rHpIO2QRIJ3fxGkU2Y+HWjQq2Gh08eLKGrYaLWsPte1TMcccBjIuu6yaww1b2uHYJkE42XLjwJ4lGMFbJ4v2bY/i7T2dw48owNE0DToloMeNKKD+WJiavWCx/V2o8WafPIim+v9+9FTMqZ4J4ILAtWfXwm4+msVHtYHGljtWNJtquf+JwivqNuvFRt7NPoNuPFLt/QhzDaBoRD9e8KLGYGCyQSPwfjVJoVIOu0dfeTKpRaJSCUHKm6vnTKQMf3BrHWrWN2aUavru7CH+NHYjBEUK2blBKFc91xBsgJBX7uv6pKEYKmYAQgyrd2bmhZB0bpRS6pqmWjfMJKEKkcLxGDzYrS98PRrpGkXFMjA5nsNX09wUSoRSlvI2hYhqmoTLOZwBQuqYhn7Vx+60RVLc6IAAe/LIetyj0cwlcAIWcjUo5jXTKGMC1K9cu5N2izh1PiKsYiTFZ+KnRwd5sSggMXUM+62CskoVjm11ZsHNKQgWhkM/QMaD3OV94X9fOtnSMDGdw590JjAxnQan2WnKYQM56lZMdLJwRHMlGQEoxPZrH331yCSHjGBnOwvWkaEp/ovxAxjEwOZrD6HAWhnH0QsrYtduVSJTt8NFQZi4EBp0J0zSCtGPg0mQBn384iUY77EnInkMgqXt+dbqkDg7j6ECilCCXdfDOtQqKeUeWY/SxDI0inTYxOpQBIeRUjpPcC0wpx8TMeBH//Pu38Os7M1L05ACnr65ROLaOoWIatqWDHuHapVSxcu3YXq4dj0e+CA6IASNJ1ymKBQeffTiFqzNlBIyd+1GbQghkUiYq5TRyGWswFskyNBiFFPJZu+8KY4Lu2JWzAqLejZNJG3DsgnSnDuHCUEJUTHn0OJFzGf/wPb5J1KsUqxwNeJNTQmFZFGOVLCrlDC7KJCZKAI1qffer7QskQgAKAqprB2JsCMGZA1FvwKlp0iIf1rIdiKV4nWunyIS9mt7iGIlH0/wG2yIbjZoilBzJup7VeGmgHbIHbbs9L+zNabjcMOwCZZcQSVWG8+1KrOf4fpxaC5bcgtPsrHdnIAm+e6VzDCSWlAklQErW6127SC9ht58rzQbGpJB+UruaAClZrxqkOI+0l5KqLBEKX/uaZCVAuvCLK4sTeXY7LU40jYLFrl0CpgRIyXqVbGBC1drtbrOEAEIhwDnZtag1WQmQkqWKUmW/0d7Ne0IQhCc2MSNZCZDODNkgy3/ErlGUtERByBCELHHsEiAlay8y4bVEgmqYDUJpuZIYKQFSsnYxOJxL6pu/pvxHjn1RFinBUQKkZL0KEDktkGG/MrogYPCDBEgJkJK1C4kApbEWkQhiz9d1XbtkncTSk1twJM+rj5BEvBYor3t1qMDRnR1Ldn0/oYTuPS+UxavbqiDENhXS19fLkdf+KCHWEyAdyyL77L3oVULFONuAR5RELxfgojsnKKqXEwLoeAHabgDPZxCvkQgTEOh4IZqdAK12IN1ALgBCQKmsYtcoVe0tpAcYRGn8JRBJgHQgV6m7i/fKt3AhYr1tHgFgR4AiEJEA8vTfNiyr9zVq0l6wrTpBbPs+QciU5RFx4WnUMuH6IZ6+3MD6phx58orNUh0TYciwuFrHg6drYIzDtkwIweOeMF2nMAwKTaPQCI2tCyEEGgV0Q4OuU+iUbgNVVPFNVH8VpUTOC9phpQghoFr3NaTn97cdKee4i+DIQOrPven7Rfu4HKIvFyR6qdjhPwkhYi1tIbCL8Hw0k5Wh7QbouAF8P1TlN70A4XCDEB03QMcL4fkhwoBv+5yos7XjhXA9OW0hageP3ogxCRbXC+B6DGEoYm0GIaTO9vJqA3OLW2i1PCVu8gqO4LohfnywhM1aB0OFFHRdygEQQmDqBJapwbYN2JYGXevqaFACGLoGxzbhWDosU4eud8FECKDrGkxDQ8o24NgGLFOPdSEIkX1KpqHBcQykHBOWAmXUuyQEoFECQhXgdmvHiN1Gss/eIfvsI9LHPtsfxIfBORGnJBUeMo5Q6bNxvl0IMZLl7Z7e3Q0phFAzbSQF7PkhPC+UoyJ7Mv1CTbfzAvlz1wvh+SwWSxdqEp6cRRT9XEoYcx7VsckHxbmAF3L4fgjP78ph9QKJc/l5fhDCjyZGiJ7qBEFknRxjkroOlMAJ77prnAt03ACtjg/XC/YcPaNRinTKRNoxYVlGfOITCGgagaFTmKYOw9C6FkO5drpOYeoaTEP+XNNIz+9LVShDp7AsHbapwdAioIlYRsA0KExLh2MZsEypNIWepjhD12CZOhxHh210vwdiq0hgGBpsBWbT1EB7LBeh6jW6BsPQYOjye3ahQaBpBLouf3YSUxi3ASkeraFOboGuco0Qr7oVPD7hpa8vdnGl4qlzvDdGiDLyahpdwOF6AdoddTIzJj+QEHUyc7huqKxEqKyEiIs0BZH0b7sToNny0Wx5aHV8BKybyGSqr6ftBmi2PDSanrQ4akSJUCYsYspCxuOpBNE96V4XUdcM8Ojvu3Tdxfem9/dfsZA97uMuJ2bE1u133HW7OckrJ3kkpSXdMNp9jqRrWShRVqQn8Iv+SlUcRan8e+/vR1ZG04h0IyOgEUlyEEpgGTpSjol81kImZcG2pVWLgahLi5bNmMimbaQcQ7qJ6lI0TQItZRtwHBMpx4Chd2UMIqUjx9Zj6yoPhO1WiFAoi6gsZC8Jo64nutau1ki341je4+5rSez+ku1A8n2GjieDW99n8rQMOVi4PY8R+fbtTohWx0er5aPjBfEsUxJTstK1abZ8daqqcv9eK8Fl9bLnS/cncqUE6XGTQjkr1PUY/CCyWNhWpMlVrRmLvjNjMZB745+of0f28LxaDBp9t27QL3YcIqTHEpJtFuYVICmNNLEXRbfbAXVcJ+Zr/JVeCySwfYNBAYeQ3n8VO363G0vtbM+WVk3GT9LiadA02hNHdWMww5DWTNPptplHBAKUAKZBYJk67AgoVH42VQpQtqXBMg04li71QiKrpyyWYxtIp01k0xZsS+sZUCbfw7Z0pFMWMmkTKduAaerKupHYcmqadGWlVaSwTR22rW+PkQImT+xW20e7Eyi3QsUKgRwrIkAguAyg250A9aaLetNDs+VJdkn0ULKBAlLTQ0O9Z+B3daoj9yVQro/nh/CDUGXye90k0W25DqV+nCA7/GLRszNJ7393d43JfvFW7Lefjwzn6zz4o3v3ZJ94WWy746+GPz3c+jbAd4Ek5dIAQ6ddF3WbRaIwTRnPWYahhHfku1DlFqZSBrIZC9mMBcfSY6sm35sgkzKRz9jI5S3pJhu6suYEVKOwLR0pW0cmZcGxdZiGDqSFJGp23tBQ9bd4XoBWy0e13kGt7qLZ9hH4YSywwVVA3fECtDoh2m1fxRxdKxC9huoabNsCpToCM9weu8QxkIxZongh5N2hWgKSzmVMxiKM89jl2snCRX05cRJzt5OYi20n6+tHlu6RuzkYHbPnL71pmJLX/gM5+O8K0lcKgCi28NXYoutyRfEZjYMcEceAmkaVNeu6qdF3MDQNpinjQFPXoOuacguJcg0B09RhGRoopWp4ddjFLgUMjcT7y/VDmKarLKKAplNYpo5s2kIxb8dsJyUkLt/a5toFAYPrhfADBi9g8P0QrhvG7p5sZ44OeqHGIqoR7YookNqBoieOAkImXTLP68Y3oidOEipO8v0QXsAQBjIIxy5umeeH8Pzo+/BtFlB2i6oA32cIlOvWe+JG1s0PQlWfxsG3uXgidkv9gKuRk70i9WKbWxbdi11RET/MHbEH6fl9sm8W6kAwEftaJvmZPZFxz/+IPa+B7ABcREToKn6JiADao2Mo4yoK09Bia0EpjckAAhlf6RGzaEnWUFMviNSLTENTLp0h3bFewoTI2Mwyu58hmckuwCN3zDZ1+XO9Nx6U98PQqCJFNBhGROOT7mcY0o1zLBOOpUnyRpE4pqH1ydqJKCbZGXRvTyqKXYJurtoAAkUrRyxYrzsg1MSFIGDwFSvH2HbVHKH03VxPupquHyIMu9+HCwHOOTxPHgYdTwIl3EGCMMW2td0Arkp2ysa5LiPGmIDnh+gogsPzAinTG49VUUlW3jstQmyrKIi8Sy4EOAOYipXELq+J7ivn20kbAQHBhGT7+N6KcjGtvCMPJP+tGzhHeoPxdKUoYdvz320/V2yZTmXcInX6ukG2rlEYpgbH0uEoejzKNQFysxoGhWMZSDkGHFvR6xrdBiTLpPF7mCpOEhEJQiXIoveIwIqe64niK8OQYIj1FLe5dtKqyJ+T7cKlpHvtXaIBuxIRe5lfvW9/QOlfkx2fIAQBKGLW6xXWCeJVNnBn8rKHIRS8yxjuliyNGt269Wfd410o106ybgycAxzbdbs5lwQHU6U3XRDwbZ5fGEoX0w8YgiBEGKv4EEW2cEWkeCqm9GUcyWVgHrnJbVeyka22j44bwAuYVESNQSvpc9cLJWB9+VnR/fI8Bi8IFT3O9wSSZWqwLOm3RxMJDYPCsgzYpqS3e6ltSghsU5dxQ9pCypbUs9azyUyDwrHlzzMpS7JpWpdQoDSinKXV2Uavg6iKCkmx65oW56hii9xLXVOiBhBs3+SECOX2yffope977eM2Rm4XH5SqnFdMiLzirIqezzx4DqrvhOxerM9OivEwCbDDZYF3EGU9kW4vWHetZ+uh93lUToPtr4/irN7qhZ0JV88P0XZDdNyIkewhWyAB67nSOnZcP7Z+oqdciPFu/qvTCeH6fky7hyHH7GINz2drmF/ZQrsT7HoImYaO65fLuDxVxOhwNnaPTFNTlkLGDnGArk5gU5eJ2pRjwLbUa7TuZtMVK+U4BlK2CdvaEeTTLpsVlyGR3goGGYBQ9XlR7uqVHUK75Uqil3wn3Tjq+Av9jvYBp7pESBwISV0GLzoxRfQQDnDTxM4susCu1QQidnnFjhBD7EFx91rt7T/jyj30fAmoCEgdN8QX37zE//jPp6g1XLQ7IQjpfh4h0sI6tomP3p3AP/7mGt59ewQp2wQgYJoytoiC7N3OwpjW3pk/6vlL7ImQV7NU28uFyKF0Xl9xo0C2HY7d1CN5E8f0+QMSOVQNB3k11j/0p765xyTE9vo9AGi7ASrlNLIZE7qu7VkGQylBMZfCWCWD8UoOKUfW2kX64+RMF6Weje+eVH+/KavaB/mmaUSN3exaMJlk1KFpdCfd1gMkwLZl9YBlajANiqjVTIg+5konLRIJkM7MeXqYQkhI+liLA3ixp4U2dApjl+kfiV73m1lJh+xpfjhEjtLU4gCf7AlWXafQDZoAJwFSsnYjArpsGNmbFyUkpp8TJCVAStYupkZTVon08so7gjBCAMOQ9HUCowRIydrtAak6M7qnRZJxk6HLxGcCpARIydplaapV/HW6ClGna5ciT1YCpGRt8+00VSfWW1qzzfcj0bxTAu0MDb5OgJSsN/uAVOcp3SNEiubdapQgEQNKgPTaddS+s7OsPqqr9gRCdyuoVB2bug6tp6o6WSfwnE4rcIRS+unVPWBMxPoI+3V/RCXxehSox23Q6GkcO+2OndRS0HVtzxhJo1RVV1O8JtWUrPMMpLhdohcsYbd/qasJ19PPFLAe3YdX9eQimlinBKYh+/sjLQAZkJM4MNdU3BE1ip3G+ELXSNyIttv3i3ptItGRBEcXEEhEyWi5SiBlqyH1H7bqHVS3XNQaLhotL+75abmy/d3zwh51nl0skUpQZtIWcjkbacdENm0in7VRyNko5h0U8w7yWRvZtAXHMWAZ2unLZSqr2pXAevXnmqZERShVCkHJujBACgIG1w/RbPuoNzys19pY22hhdb2JjWoLa5ttrFfbqG51sNXw0Gi6aHWkvlu77cHzWI+E1Q6LpCSgTF1HOm0il7WQTlnIZSwUcjaGCikMl9OolDMYLqcxXEpjuJRCMe/IBjdHarPRPTQG3rxF6tLfr34doYCkYqSEbTj/QIq7YLlAreFibmkLz2Y38MvsJl7Mb2FptYH1zTbqDSm00nH9eMICUx2sUSer2EfiCkKAcSkSWW96KqlJ4ka1lCPVZIp5B5VSBlPjOVyaKuDajGyOG69kYRp6HEudpKWiqsN0d7dT0uNm7NphIEHSm5IIO4trL/f/jQBJAOi4AdZrbbyYq+Lpy3U8ebGJ2cUaFlfqWF1vod5w0er4sZLQTs2GyJUh/XyaAAAGxgDhd78DiTamJvv7HdtAJmXh8QsHI8MZTIxkcXW6hOuXhnB1pozxkRzyWQvGCSU6CZTrpmmK/t4rRtJ6BBcP/3mMC3heiPmlLTx5vg7XD7eLpFxc9IAQoFLKYHqigOFyBilbf3NAkjJbUkgyEnn/4psX+OnhMp7PVVFveXGLNu9VBIJsPx7EsyO9XZ7q30Im1VxdL0Btq4PltToev9iAbWoYHcrg+qUyfv3RDD68PYGr00WU8inYlt4j7PHmlqZR6IZsAd/thmg0IlHokfNInHE02x5+uL+E/+tffka17oIxceGBFB1QH7wzjn/63XU4tvHmgMS51DRYWN7Cz49X8dfv5/D9/SXMLtSwUW2j1fGl2il/c5O4XxXVl//KfMkKui6F6zJUt1zMLtbx3b0lfPzuOD55bxI3rw0jk7JkTudNYUlVLOgaeY1ForFGw1FpfS4EPJ9hZb2Jnx+vYnPLRcjEhXfziFKbzaQtfFSbgO+Hx+/aCSFZuGrdxdxiDXcfLeOrH+bwzd0FPH2xCdeTmgSEnK5TTsZfDM2Qo9kJsLzewuJqHasbTWzUOtiodXBlqojR4QyyGasrC3WsyJcKn3GM9IparFLX0TVJNpCjPjtplTpugM2tDtarnQRI6Op915ueHObWI25KjgNIkSLO8noTD56u4o9fvcA3d+fx6Nk6tuouPC+EEAKEnOYHI0DAwTnBerWNr3+cx9ziFn5+tIK/+3gGd94dx1tXhlHM27BMHa+KJw7yCQolZ6X1qItud/GoypfJhCw9unVXGnc6JaBE3ouL7tpRxQRTpTdOjotsiJ5do+nh5UIV3/68iK9+mMf39xbxcqGKWt1FGLIzc+MiWt1X6q9BwNDqBGi0PCyuNbC60cJ7b49iZqIAy9SPLZFLoBKyUZfsLsInclIDVT1LR2PtunEk2c0pThi719zdgQCJcSmo/2Khii+/fYk/fvUS39xdwOp6A+2Of2abNqN96fkhVtYa2Gp0sLbZQnWrAy8IQQjBxGgOacc8pmskceXCbq5dTDYYdNu8oGS9+TWAiX1y6sSz2U188c0L/Pf/eIKHT9ewttGEq4Ky4+ISdm0Y7Xe42wEtlNSZC/Byvop220ej5aPe9PHPv7uOqfGCFHc/BjR1+5G6cVGvdx5ZpCQZe8aB1O4EmF+q4z+/eYn/+Mtz3H24jPXNFvwgHNipHM/cIQRRznE3yVmowVBRsWtXIpnHIoOH3etR0Wyz7ckxlkqSOO0Y+OyDKVydLsE0Bp9vopTGhbd0L4sUT19I1pkDkhByqsPSSgPf/byAf/3zU3z9wxy2mq4UnD80O9KjLa1RNdJDThiQvTldiVyC7YOBI6H/aAhyGEv/qkkaHPH4yX4qyPeKBxnjmFvaQscNEarRlYWsjVIhJTXlyOCKRyPd6+0T6LCNbNA1VdKUrGP08Y8JSH7AsL7Rwlc/zOH/+fdHuPd4BdUtF4yzQ2xQogYNS4A4jolcRtbHZTMWCjkHmZQceRhNU7MMDbRn8ltXS1uOj6k3fSlg7/qobckZT42mj3pLliD5Udb+EOKIcvI4R3Wrje/uLsI2pQD9Zx9M4dJkIR49Mij3NRqkpet0BwEgQWbo9NSoqQpx/oSMuvO+9o4W9MO8KeMcm7UOfni4hD//7SW+/GYW69WWnP16wMBEVgtosC05TLiQczBUSmFkKIuhYgrlUgqVUgq5rI1sykQ2YyHtGLBMY3v7tarli6rJtxqy0LXZ9rC20cL6Zhvr1Q5WN5pY22hio9ZGveGh4wWyJGmPSQ97b3CCIGBYWm3g258X45YNx9ZRKWdgW/qAgEQUxa3mBpHt7qwcZExP3LWLpkX0fj1xTsg+qubHmNEQaTIAIHEh0Gx5ePJiA//93x/jL9/PYqPWVu6cOPAm0XUNmZSFybEcrs2U8daVIVyaLGJsOBu3OmTSpuwrUtMS4rqyPVxOATkALSpRarZ82Z7R8LC22ZS1ZC828eT5Op7NbmK92kbb8+VomEM8/NX1Fr65u4BS3oFt6fj8w2k1XfvoOaZoLKN0b+krA/aiad4nRjYQQCMEKctANmvHE83PnWdHgELOhm3q2wahHQpIAkAQhHg2V8V39xbw/f0lzC1uwfND5ZodLIjOZS1MjebxzvURvHVlCNcvlzE9VkClnEYuo/qE1ES0o2yUsMjUpAeGZstD9coQ3r46jOfzI3jyfB33nqzil5cbWFlvoOOxA07JE+i4PpZWG/ju3gJyWQvjIzmYhoZ81h7QaU/iSXM73YOo+vukmhJl75eOy9MlfPLeJHJZG4ZO3ljZ1xsBkrq3V2ZKuDxVRNoxjmaRwpBjq+Hh3uMVfP2DzPg32z4A3vcXIgQwdB3ZjIVr0yV8/P4Efv/ZFbx9ZQijlSwcy1CuSrfalIBso7VJn6CP8KBpFI4tq73zOQujlQyuzpTx3k0XCyt1fP3DHL78dhbf3VvE8loTrheosZr9bQZZFhXgyYsNZDM2rl8uI5exkEmZ24Z7HY61U+MjdUm4gBKAdbl96dqdlEWShJBp6rhxeQj/7X97B+MjOdiWdq5cu+jxpRzZHOrYRwRSq+1hbmkLdx+t4v6TdTSaLkLGD6SgQqmG8UoW790cxT/86go+encC0+MFFHI2LEvv0bkejDmO/q93IJqklDkMPYV0ykS54ODapTKuzZTw5bez+P7+IprtAIz1zz4yxlGru3j2chN//X4OQ8U0xipZpGzj0MlSxearEZJyHD3ZaZE0KnunTsgiyVmyBJm0ibFKDpNjOTiWcQ6pOyEZ5GgE6GGAJIScbLdR6+DBkzU8/GUN88tbcP1QjVPuwz2hFOmUibFKHnduj+N3n87gNx9N4+pMWZXZvNmHTyiFZcq5osWcjaFiCvm0tCK6QfH0xSbWNlpwfWmd+rlHQcCwttnCD/eXcGW6hBtXhjBRySHl0CN8V6kUJHUZoiKV7h3XdElEnFyMRFSsS5GydaRsE4598Yac9HXFnAN+EGJhuY7v7i3ixVwVjabbN9NFqZxlOjmax+8/v4x/+NUVfP7hJAp5lXc5cXpTlsh/cHschbyDsZEc/r8/PsE3dxewtNpA2wsg+rhWQuRwsF9mq7j7cAVvXxlCTrWvH256I5EzVNUYSz0WyVeTCSmgq0HEva7wSVHEb7Il5kwCiXGGar2D5/Ob+OnhMlY3mggZ74ulI1QO/b08VcSn70/iH351BR/eGkdlKCN9/lMSTEbFodPjBVBKwEIOy9LwxbezWFqpo+0GfW2SMGRoND08eLqKL7/N4tJEEcOltNr/B93lQiWm5YkfuYhCUbIkIiJ0iiQfewaA5Acc80t1PH6+gWezm6g33b4/wNQ1FAsO3nt7BH/3ySV89O4ExivZU6stl3IMzIwX1Gwigq2GrFyfX673RUBELt6L+Sr+9uM8fnVnGlPjeWTSlnLNDu6HSm1vuoP+JlLzTlPTxAk9SYOUAGk/c00I4Lohfnq4jHuPVlHdcuEH/VkjAMhmLFyZKuHT9yfx8XvjKBdSp1rsnVIC09QwMVbAnZCh2fHR8UKsbrbheUFP6/XrLclWw8OLhRp+vL+EiZEcbt0YkTmWwwTzVCoFvfL7RA4Yk0ItyWY+0X2z34bgXKC61cHdh0t48mIdrhfGw4L3c5cMQ8PYcA4fvTuOd98exfR4AY6tY69RP6dlaRpF2jEwNVbAZx9M46PbE7g8WYRjm/1RukImgje3XNx9vIoHT1fR7gS76vD1wT1C16jKI2nbNShUQttQU8uTdUqBJATQbHtYWN3Cg6drmFuqgQveFwg0SpFJ2bg6U8JvPprB1ekS0o4phwqfkZVJWXj76jA+e38Sn7w3gVIhBUIp9itJjYgF3w/x6Jc1PHi6hlq9gyDgh3tIlMAwdyRk1WGkJ20UZ8O1W1xp4P6TNayst9DuhADZv4dfCMA0NcxM5nHregXvXK+gXEyduYetaQSOpePm9QpqDRfP56rYrLbRcX0wvr/2eBgyrG60MLtYx8JKXam8pg4OJEJgaJoqTen2aVJClLXSk4mXp9UiCQGEjGN2qSYruxuK7hbYdwMRQpBJW7h9vYL33h5RiUnzTN4gQoCJ0Rzu3BrHuzdGMDmafbVUZ4/FhUCj7WN5vYGXCzXUGi4O021ISFffmxDZLxKRgJouq7+TNopTCyQBzw8wu7CFR7+sod325Um4r5MvG83KhRQ+eX8Kt26MwLaMM3xiEliGhspQGp99OIX33xmDYxuvHY4cA4nLvqhqrYNns5vYrLVVC8bBwSzpb/oKwHSl/Z24dqcUSEHIsFX3sLhSx/xKA16fVQyEAMW8g0uTRbx1ZRgTo/m+T/DTapEIIUg7Jm7dqODWjRGUCilYpt6XbWGMod50MbdYxfpmW+qWH6Jlw1CSW/IfhIqRaExEJK7dKQWS64VY3WhiZaON6pbset3/YcnemdFKBjevD2NqLI9s2joXbdC6TjE1nsf1S2UpeJIysV/WRgipVd7q+FhebWK92kazvX98tRuYDeXCIWbtiNIF145cHZ+sYwBS9Ig7boCF5To2Nlvw/P4o7yh5OD2ex/tvjyKftY4sEXVqiAdKkbJNjA5ncePyEIp5R7Wr731tIj6UmBSZrHZQb3l91e696topfe+dAFd1eDQxSSd70O769IkUNVlabaBW76jBXv1sNoJ0ysTMeAHXL5WRUn0b5+UZGwZFqeDg2kwZj56tY2m1oWIesWvFelQFoWkUbsDRaPlotjwwljkU2bAtRlL0d6S0mlik0wYkCHAuiy/XNltotIM+ixEJLENHuZDCxGgeY5WcUiI9H0tqJ1DkMzauTBVxebKItY0W/JCDMb6r+ypUj79p6rAtA4xxuG7Qf4xEekgFXVOVDSJWQ9IoFNlAk2nmpw1IQkiiodH0pE/fdMH5/n05QgjYlo6xSg7DpTSyafNciRZGGzWbsXDj8jD+8LmPidEsglCAsdcnqSmlSDkm3rkxjELBOXBSWrp2sp1CEj4i1v3Wohm5yV4+bUCSUySabR+btTbaHR9iH4tEFCtu2wbGKlmUCqk3IzJ/AivtGJieyMNxdNy6UVGFrHtnh6IQUaMUxbyDctE5sP4dgZp7q9FIcwyEdHUc6ICaIZM1YIvkBwytto9GUw7+4n24dYQAjm1guJxGNmO+ZsrcGb9huoZMSha2jpQz6t70WXuoywFn/Ravkp6DKgJSVKcYNdMdtZU9WccEJK4skpzZGiAI+iQaNIKUYyi3zoJGzucDjpKjuk4B+019pgRNl52TqqtRknYvXfBknSTZIADPY7G4YsBY7Lq9bnMZuoaMI/UP0o6pWKTD9YUma/f7q+td3QaiRE+k5T8d37MrFX327/fRXTvIqW2dTiDHUvaR8yCQD9VxTOSyNmxbV4pBCYgGZZEMnaoq7x7XTttr2vnJfEeZ0yIXssriVdeOC3hBiLYXqOl6/WkVGLqGlKMjnTJhmVoCokFbJEMRCxpROSQCnaq5SSfm2UnzI7hAq+NhZb0Jw6Cwz6SKUJcJzaQtmKYky/rdxruTDT6D64ZqUPLru2Ej/WzT0GBbUrZX15JK5MGf9ttjpDhW07QTjZE4F/CDELMLNfyvv/6CUsGBoetnDkSAZFbzWRvv3xzDxFhOFif3eWN3pb/9gMHzQvh+2JdSkOyGpT1A0pL4aOBkgxZXMMgRL6QbM52g9edq3OnsQg3/6y/P4diGmsB+xnBECHQqB8eVlea8beqAdkggcQEEAYPnS3H5vtrKIV07S01l0DSSgGjgZAOFofX2HW0fiXlSkZIQAkHIsbTWxHq1E6vpnrE7HMehV2eK+O3HM/B9diDSRO910QgBhDLVni8nNAgu9pF6Eio5KPuQTKUImqzBrUhpVaqtknhCxfbZsSd4oAtZ3XHQYtzTBiTL1OD77FD6fLu6dkEgh3OJvrwzNYKREpVfSQooB/+YAUMdVJQSgO6ovzsFt/tsC0PKjS7E4Q3AK7/JIUc6Msb7bIqWr6JUlvR3J8slk7AH6dvpRjRLlsZt5rrWjZESkvSEvYbtp0p3kJhsPusTDKQ7NYHG+aPkyQ7OtYsSstFAMRIzeXuNxEzWCQIpMtGCSz27g9gUQghIlCxM7uuADRKJO2SjBKxk7Qg0SpP7fRqBBMh6O3GIWg+V4Uis0TGsmP5WFp+oNnNNpyCvjMRM1ht/PrudfpQSNdy3/4cTtRIIHMAlTFa/IZK0QJR0K8Cj1orEIp0+IEUl+jpVGmq0y2j0BSau/iQ4GrhrB0gNO01NTJdkg4yRTlO93dm9x/RIsf2rFinqvKRUiqr2hSCZ4Wbqj4h7dJKzcqB+eDzdXMajuk5OheZ3xBrKqevAWezXjXKhWuQlH/BQ0HcConvSHaz0hHGOIGQIOVfVEAmIBr00Kue1RhtXFq2e8AaEzCFmMxZKhfTJTg880nXIPOj0RAG5jHXg/Jze69YB3Sy6GTNEdJ+YR84AD5msuQqCsO9Jfsk6IJA02ZkrtRu6KYeT9KiIAveV6TJ+fWcahawFw9DO5P2llKJcTGFmoiRrBg9wY/XdAlvdUKMWVZy0b8wjBFjIEQQMvt9ffV6yDmmRItcOgKZB9SedFJKUSKVBMTmaw28+msbocBaWebaAFO1WSogS8MmqVqCjxEiEwDQ0mJYO3ZATEMJ9pnsLSOUh12fwfNZXM2CyDmmRVC0jpST+L3By7DdRTGKpmMLb1yqYGsufuanmUcY0OpD0iMA5ikWSAa0O29Rhmaq2i73eSZatFxwdN4TrBQhZYpGOy/WwTEM2+BFZDX5aErJUJY0tQ4NlnT3XTgjZ2HfYm0l3s0iWqcGxDfXQtNcSBwRKCy+QIGq7sv1CJBz4wJeuyWcj+5BIV8b4xGlnEnn4ZzaDeNTmSLpbjGSbOlKOCcc2+pskIYAg5Oi4AZotH54fJrv+OE59NVRM0t6qRKjL1yY36CSfzatnC4Fp6kg5BhzblBZJ7O9jBiFDu+OjtuWi4waxJnayBmiRFEOma7J5Ute0U5OMvfDP5tXgEbBMDWnbRNoxYBiKTxev8y+BUIlKbtTk6BIuBLRz/IgFcGA/5qgemIxftbiaobf6Oym1O21AIgSWqSOVMpBK6TCN/jJ+jAu0OwHWN1totnyEjMd1YedxncS0Gi2abq66ZHWDqrmyyTqFQJKDlNMpE4WsBdvWQSkB56/pghSSQOx4IZbXW6jVXTkKxjh/FQ6eH6Ja72BxpYH1zRYY4+B9zNU1DQ2VcgajwxkUcgfX/5ZAIrAsHbou3W0jkudK1ikEEqT7kEmbKBdTSKcsUKqB8/C1bg4B4Hkhllbr2Ki14fkhHEuHpp2vG7ZVd3Hv8Sr+9c9P8c1PC2i7/r5aBbouZZ5+9+kl/OGzy3jn+sihgERpZJE0cAFoupYMYT7NFknXKDKOieFSGpmUFSen9ptI4XoBVtYaWF6tY7PaQcoxz2y5yKtGV157venh2ewm7j1exd1HKwjC/acZ2paB0eEs2p0wrtw+tGtn6rIHiQmlIoREjPM0Aglq1k46ZaAylEUuY0GjFEEfbxaEDLUtF/NLdcwu1jBUSiHtGOeiDly24AvU6nJC+cJKHdWtdl+kA6WanJFkm8g41qHjGk2RDTqlCDmXreeJYtOpWHTXIBqAYxmYqGRRzDt9D/vlHPBDjheLNfz8ZAXNtt/1/c6BRfKDEOu1Np6+3MRmrS3jRs4hxOv/GDpFMWuhmLeRzViHlivTNALLkF2xkv5WlQ2JRTp9QIrdEVu6I8OlFFKOJBz2x4MA4xzzi1v4+eEy1qttNX/27COJcYHNagezi1t4MV9FveEC4PuQDJKXdiwNw+UUhkvpbon+oSxSFCNJNaGowiGB0SkGkmXqGC5nMDqUwVDRgalrfVkWLgSW1hq4/3QVLxeqqNY7Z7oaPPrmns/wbL6Kx882sLBcR6vj97WBKSHIpC2Mj2QxXE4jkzahHbJfR6O0K6avBPRpIsV1uoEkCQcD0+N5XJspI+WYSq9//2Ci40oa/Lt7i3j8fG3f6vGzgKRW28c3Py3gu3uLaEYDqvf5VamJrqOQS+HSRBFlNT+WHBJIkXSxRrvV3yQR4zzdQJKjRHRMTRRx83oF2YwtG532Pf6kfO1Ww8MP95bw86MVVLdcBOHZBJMQArW6i2ezm/ju50U8frYGzw/7cldlf4ucYnhpqoRC3jlSPEMpUZJcUususkjJOsVAkg8OmBzJ4ua1CkoFG6ax/9yjSEPcdQM8eLKKH+8v4+VCFY2Wf+ZEUbgQCBjDs9lNfPHtS9x/soLVjRY4Z/taZiEIqEZRyJgYG07HLcxHIV6kFdIU5c3jgWPJOuVAAgFKhRSuTBVxebKIoWKqrwdHCBCGDOu1Nh4938A3dxewsLwFPwjPVLzk+wzLqw18d28R//nNSyytNfqe0CEg1VFnJgu4dqmMSikNxz5aw5sU6JB/9Ni1SzbxqQcSAZBKmRir5PDOjQqmJwr9tVWo07zjhphdrOGv38/j0bN1bNbaZ8LFEwJgjGNzq4N7j1fxt5/m8cP9JTSaHvpJAUUecMoxcPPaMG5eH0YuYx+59pAod87QiYqVEtfubFgkRS5k0ybu3BrHO9eGYZs6CKHYL8UqhADnHGubTfz4YEnGF8830HGDeLOeXpeOo9n28cvLTfzPL37Bdz8vYrPahh/0ewgQmDpFOW/hw1vjuH1jZCBdo5FMcaQDriVEw6lZ+n4nIAA4toHrl8p46+owxitZhCFHq+P3Fai3OwEWluv45u4CclkLhZwNTaNIO+ap9O8Z52g2fdx7uoovv3uJr36Yx8v5Glw/BO9THYkQgpHhDG7dGMFbV4YxOpQdyDjQaAKFaWgIIu2GxCKdfiDFL9IpRoayuH6pjLevV9Bs+2i7QV/MFWcSdD88WIYQQKWUiWMH29RVxcTJ5kKkzLm0oM12gLmlGv7jr8/wb1/+gscv1rHV6ED0CaKosPTG5SH83aeXMTmWh2FqAzHBsgdJVjeEpn7iYy+TdUAgUUKQsnVMjeVx550xLK00sFZtw/eDfQNvAYAxhq16B4+ereP//h8PUN3q4LefzODSVBGlvAPjxEvEBTxPlv/cf7qKr76fw5++fo77T1bRaLgHmkRnmTpGhrK4fWMUd26No5izVe/S0Te8dO1k4aofcpWYPT1AusgN730BKZqgPTKUxvs3R/Hw2Trml7awttnsS59BCCAMOVbXm/ji21k5LZ1x3Gl6uDpTwlAxDcfWVTD+5h6FnMjN0Gh6WFlv4MmLTfzlu1n86esX+GV2A5tbnb4tCVFTIvJZGzevDuH2WxVcnSkjnRqcNBVVEygMQ4s7ZU+XXMPFbdXV+90kAkAh5+DapTJuX69gbmkLzY4PL2AgEH3sN4GQMTTaHn58uIxqQ1ZRf/zeBO7cnsCliQKKeUfOsRU7ns2A3Ledh4PnM6xXW7j3ZBU/3FvEN3eX8OiXVcwvb6HtBgdyxygBLMvAxEgOn304hZtXK8hlLaXCNKBtSgh0KuckGUpz8FTt2wvsZeoHuUe2paNSzuD9d8awstHE3GINzZanXJ8+citCIAhCbNRacP0A7U6Atc0WZhe3cOvaMK7OlDE+kkOx4MCx9IFap+itwpCj3vKwvtnG7EINj56v4/6TFTz8ZQ2/vNzEerWNjusfeAdpuo7xSha3blTw0e0xTE8UurqAg7JIyrWzTB1ByKHpimw4wT4VwQXCkGF1o4kf7y9hZb0B29LPnfANAUEua2G4lEEuY8I09cMBCZCNZZmUiVs3Kqg3Xfz0QOZWqnUXnPdf5c05R7Pl4enLDSyu1HH30QrevjqMD98Zw4e3x3F9pozKcAaOamLrFmeSHu+B7G16SHeMp+ACXMiq9DDkqNVdzC9t4efHK/j+3hJ+uL+EhZU6ag1Xxnzs4MPVqEaRSdt462oFH787gZvXKqiU0gPvXpUTKKRbZxj0jbvCe7nHgR/i+ewm/uWPj5HP2TB0CtGXl3J2FgXB1UtlfPzeBK5Ol44GpAhMw6U0bt8Yxf/++xsQAL78bg6+339AHrFkQcDQZByez9DqBHi5UMNfvp/D9HgOMxNFTE8UMDmaw4hqMLQtA6YRjYCkKjlKtjEbTAhwxpWEcohWO8BGtY3ltQZmF7fwcqGK2cUaFlaaWF1vobrVRrvjIwgPJ2opAKQdA9OjWfzmziR+dWcK5WIahjF4t4tQCl0jMAwKMxKHPFGBSKH6tATmlupotEIYahrFeQJRdHc//WASo5UsxlWf3pGARKlUGZoczeF3n17GVsPD2kYb88tbqLc8iAPo2QkhEDKBkPlodwKsrDXx6NkaijkbYyM5zEwUMD1ewMRIDqWCg0zaQtqRCrDRidzVdSPS6jAOzw/heiGaLQ+1uouV9SYWlut4MV/D/NIWVjebaHVCMMbVcOPDPXVNo3BsA1enSvjVR1P45P1JXLs0hJRjHMvmppCkj2noMA0m80ixVtrJgEmow6vW6KDW8M6hlqGSOxMC4yNZbDXcWNu+967rh337lGPinRsVtDoBXI/h3//yCx4/X4frBWCH0P6WZTUCnAO1uodmZxMv5mowDKknnU6byGUtZNM2UrYJy9LjAcWaRuXJ6HN4QYCOG6LV8VGvu6g3O+i4ITxfgiwMOULGQASHRroC6gePtwgc28DUWB6//XQG/+2fbuHta8NIp8xjS5JSQuKErGlKNaHTUmunRItx/tTBhBwHS6gafk2ORja8ehoTpB0TN64MoeMGcP0AlABPXmyg2fYOUZwqtiVG/SBU7oFQfT1SQN4yNRi6HneHUhU/CSGnBYYhQ6BGzHheADcIwRmX76Wa4I66zSXN7eDyVBG//WQGf//5Fdy8NoxC3jnWsh1CSTyRwjw1ut+vPsPztggAQQbE2u0VHwwVU/jw1jhcP5CSXD6T1LgC02FNPSHoiYEIGJPlRu1OsJ/wa/fi1ati5uyIIu8EMthPOSauzpTw+QdT+K9/eAu33xpBqZgaSBnQfvdE08i2PBI9CaXKZA0WSASyY7OQs/HxuxOwDKlJ/cevXuDek1VwfrRK7y4Gxbb/ilfCwJ3wPga9FSJ7jHIZB9cul/BffnsVv//sCt6+MoxSPvVGFE/lxHmZQzItTZUIJX0UZx5I0cO1TA1jlZyke4l0xXSN4sV8FbWGC85F3wWfB7eJb8C0UwLb1FEqpPH2tWH85s4UfvfpZbz79ijyWUn3vsHQt5uQjdsykpm9Zx5IEZg0SlAZyuC3H19GPmOjXEzhX/7jMR4930CrEyDwo9myZ8OPjid1axpMQ0e56ODO7Qn8/rNL+MdfX8XEaB6ZlPHGp4pHug2WQeMYMQHROQFS7wPW0ybevlaBZRkoZG18d28RPz9ew/xiDZtbHUUiiFNbkiXUqU+pJFOGyhlcnS7i9o0RfPb+JG7dGMH0eAEpxziRglE5mlSHEIBxTCVCQohDsZnndQkIEPF6OTr9OB50uZBCJmWhXHAwOZrHcCmDu49W8HxuExvVNpotD37AwAU/VdaJqPGNjmUin7UxVsng2qUy7twax8fvTuCdGxWUC47SpTgBEEGprZpSO0Nqf5Nj+aDobZM2DfTF9OrH9eGGTjFaycK2dEyM5vDe2yP4+fEqfnq4jEfP1rCwVIcXACCSSiPHRRK8ZlNGvKbooQELWQeXpkq4dWMYt2+M4J1rFcxMFjBaziCVMk8MRNETpVTmrzSN9bh1g4yRRJwol7GtAC64dSJE0t+vY6GPDUiUEjiWAbOsIZO2UMw7GK/kcHmqiMfPh/H0xQbmlupY3WigWuvA9RgCxmNADarq+1W3Rd4ZLmTFtqFryGZMlItpjFeyuDJdwo3LQ7h2qYTLk0WMj+RQyDqnYsAwUffVMnRoqlyIkMGBiFIKxzFx4/IQ/usf3kK96SFMgKRk6IB3b4xgarwQi9j03nUijrmmQw7oFWBM1ta1XR+r6y08m5M6cXcfLuPpiw2sbnTQ6vgIGQMXApxJ9Mvf570BTF/uINnxF4JuXRpVmtmWoSGXNjA9UcDN6xV8/O4kbl4bxvR4AdmMCdvU1XhJHGni9aBWyDg6qnU/ZBwzk0WkVTnSIIwk5wJBwLFWbWFxpQ4/TIZqR3sHBChkLVTKGeQzNixruw06diBtAxUXYELEdXDr1TZW1hqYW6pjbnELs0tbmFvawspaA5u1FtpuCD9gYFyAM6lMJCKrIiJXkHcPTIJYC5YQWYVGqIwroonguayNoVIaU6MFTI3nMT2Wx/R4HmMjOYwMySFgaUcOoT5tunFRI2J1S8pAl4tpWKY2MMIhqizxgxCuJw80JKRDvLkMXcoIGPqr7TFvFEi7rSDk2Kq7WFprYG6xhhcLVcwv1bG81sBWw0WzHcD1QnieLP1hPPoj9SC44BBcxKey1MSW9Xe6RmEYFLapwXF05NImhkppjFWyuDxVwqWJIiZH8ygXU8ikzdPPHgnZguJ6IQQAx9Lj2VXJOmGYnSSQhJC9QpwLhCFHEHL4foiOG6LR8lDd6qC61UGt4aLR8NDq+HB9aaX8gCEImGx/4N24zDA0WKYGxzLg2AbSKRP5rIzRysUU8lkbmZQJxzZgqNNF06JixNMvSB+5uzGblIAoAdJriCMEjKHjhmh3AnTcAJ4fwvclcEImrVPIOBjjMZCi4lajR9fAMjTYtoGUI/9Ypn7sNXHJSoB04q5Ll1Xo8c7FNozJnieI7XSkOpmpqkfb5sJu4wl66GKS1AQkazDr/wfukAo022GkLAAAAABJRU5ErkJggg==" alt="로고"></div>
+
+  <header class="hero">
+    <div class="eyebrow">KICKOFF 2026.06.11 → FINAL 2026.07.19 · MetLife Stadium</div>
+    <h1>모빌리티사업본부<br>월드컵 우승국 만들기</h1>
+
+  </header>
+
+  <div class="perf-divider"></div>
+
+  <section class="pot-board">
+    <div class="pot-left">
+      <label>참가비</label>
+      <div style="font-family:'Black Han Sans';font-size:20px;color:var(--paper);margin:4px 0;">10,000원 <span style="font-size:13px;font-weight:400;font-family:'Pretendard';color:rgba(244,236,216,.65);">1인 고정</span></div>
+      <div style="font-size:12px;color:rgba(244,236,216,.55);margin-top:5px;">💳 카카오뱅크 <b style="color:rgba(244,236,216,.85);letter-spacing:.04em;">3333-28-6014253</b></div>
+    </div>
+    <div class="pot-right">
+      <span class="pot-label">TOTAL POT</span>
+      <div style="display:flex; align-items:flex-end;">
+        <div class="led-number" id="led-number-container"></div>
+        <span class="led-suffix">원</span>
+      </div>
+    </div>
+    <div style="width:100%;margin-top:4px;">
+      <table class="prize-table">
+        <thead><tr>
+          <th>순위</th><th>배분</th><th>예상 상금</th><th>대상</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="prize-rank">🥇</span> <b>1등</b></td>
+            <td><span class="prize-pct">70%</span></td>
+            <td class="prize-amt" id="prize-1st-amt">-</td>
+            <td class="prize-note" id="prize-1st-note">우승팀 적중자</td>
+          </tr>
+          <tr>
+            <td><span class="prize-rank">🥈</span> <b>2등</b></td>
+            <td><span class="prize-pct">20%</span></td>
+            <td class="prize-amt" id="prize-2nd-amt">-</td>
+            <td class="prize-note" id="prize-2nd-note">준우승팀 적중자</td>
+          </tr>
+          <tr>
+            <td><span class="prize-rank">🥉</span> <b>3등</b></td>
+            <td><span class="prize-pct">10%</span></td>
+            <td class="prize-amt" id="prize-3rd-amt">-</td>
+            <td class="prize-note" id="prize-3rd-note">3위팀 적중자</td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="reveal-btn-area" style="display:none; margin-top:14px; text-align:center;">
+        <button onclick="showRevealOverlay()" style="background:var(--gold);color:var(--ink);border:none;padding:13px 36px;border-radius:10px;font-family:'Black Han Sans';font-weight:400;font-size:18px;letter-spacing:.06em;cursor:pointer;box-shadow:0 4px 16px rgba(231,183,80,.4);width:100%;">🎬 결과 공개</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="settle-panel" id="signup-panel">
+    <div class="panel-header" onclick="togglePanel(this)" aria-expanded="true">
+      <h2>📝 참가 신청 <span class="deadline-badge" id="deadline-badge" style="display:none;">마감</span></h2>
+      <span class="panel-toggle">▾</span>
+    </div>
+    <div class="panel-body">
+      <div class="panel-body-inner">
+        <div id="signup-form-area">
+          <p class="hint">이름과 우승 예상 국가를 입력하고 입력완료를 누르세요. 마감 전까지는 예상 국가를 수정할 수 있어요.</p>
+          <div class="settle-row">
+            <input type="text" id="signup-name" placeholder="이름">
+            <input type="text" id="signup-country" list="countries-list" placeholder="우승 예상 국가">
+            <input type="password" id="signup-password" placeholder="수정·삭제용 비밀번호" style="min-width:120px;">
+            <button id="signup-btn" class="primary-btn">입력완료</button>
+          </div>
+        </div>
+        <div class="deadline-notice" id="deadline-notice">🔒 참가 신청이 마감됐어요. 예상 국가 변경 및 취소는 불가합니다.</div>
+        <div class="p-cards-grid" id="p-cards-grid"></div>
+        <div id="admin-deadline-area" style="display:none; margin-top:16px; text-align:right;">
+          <button id="deadline-btn" style="font-family:'Black Han Sans';font-weight:400;font-size:13px;padding:8px 18px;border-radius:8px;cursor:pointer;border:none;">⏹ 참가 마감</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 마감 후 참가자 명단만 표시 -->
+  <section class="settle-panel" id="participant-view-panel" style="display:none;">
+    <div class="panel-header" onclick="togglePanel(this)" aria-expanded="true">
+      <h2>👥 참가 인원</h2>
+      <span class="panel-toggle">▾</span>
+    </div>
+    <div class="panel-body">
+      <div class="panel-body-inner">
+        <p style="font-size:13px;color:rgba(192,57,43,.9);font-weight:600;margin:0 0 14px;text-align:center;">
+          🔒 참가신청이 마감되었습니다.
+        </p>
+        <div id="participant-name-grid" style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0;"></div>
+        <div style="margin-top:16px; text-align:right;">
+          <button id="deadline-reopen-btn" style="font-family:'Black Han Sans';font-weight:400;font-size:13px;padding:8px 18px;border-radius:8px;cursor:pointer;border:1px solid rgba(244,236,216,.25);background:transparent;color:rgba(244,236,216,.6);">🔓 마감 해제 (관리자)</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="perf-divider"></div>
+
+  <section class="settle-panel">
+    <div style="padding:18px 22px 0;">
+      <h2 style="font-family:'Black Han Sans';font-weight:400;font-size:19px;margin:0 0 4px;color:var(--gold);">⚽ 대진표</h2>
+      <p class="hint">관리자 모드에서 이긴 팀 옆 <b style="color:var(--gold);">▶</b> 버튼을 눌러 진출 처리하세요. 다시 누르면 취소됩니다.</p>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="bracket-wrap" id="bracket-wrap"></div>
+      <div class="third-wrap">
+        <div class="third-label">🥉 3·4위전 · 7/19 KST (마이애미)</div>
+        <div class="third-match-box" id="third-match-box">
+          <div class="bkt-team" id="brow-third-0-a">
+            <span class="bkt-flag" id="bflag-third-0-a">⚽</span>
+            <span class="bkt-name" id="bname-third-0-a">대기</span>
+            <button type="button" class="bkt-adv"  id="badv-third-0-a"  data-round="third" data-idx="0" data-side="a" data-action="advance" disabled>▶</button>
+            <button type="button" class="bkt-undo" id="bundo-third-0-a" data-round="third" data-idx="0" data-side="a" data-action="undo">↩</button>
+          </div>
+          <div class="bkt-team" id="brow-third-0-b">
+            <span class="bkt-flag" id="bflag-third-0-b">⚽</span>
+            <span class="bkt-name" id="bname-third-0-b">대기</span>
+            <button type="button" class="bkt-adv"  id="badv-third-0-b"  data-round="third" data-idx="0" data-side="b" data-action="advance" disabled>▶</button>
+            <button type="button" class="bkt-undo" id="bundo-third-0-b" data-round="third" data-idx="0" data-side="b" data-action="undo">↩</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="reveal"></section>
+
+  <datalist id="countries-list"></datalist>
+
+  <footer class="footer-bar">
+    <span id="save-status">불러오는 중...</span>
+    <span class="btn-group">
+      <button id="admin-btn" type="button" style="border-color:rgba(231,183,80,.5);color:rgba(231,183,80,.85);">🔒 관리자 모드</button>
+      <button id="refresh-btn" type="button">새로고침</button>
+      <button id="reset-all-btn" type="button">전체 초기화</button>
+    </span>
+  </footer>
+
+  <p class="footnote">※ 참가 신청, 대진표 입력 내용은 이 링크로 접속하는 모두에게 실시간으로 공유돼요.<br>진행자가 대진표에 경기 결과를 입력하면 접속자 전원 화면에 새로고침 시 반영됩니다.</p>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'wc2026-champion-pick-v1';
+  const ADMIN_PW    = '0313'; // 관리자 비밀번호
+  let   isAdmin     = false;           // 페이지 새로고침 시 초기화 (메모리만 유지)
+
+  const COUNTRY_FLAGS = {
+    "멕시코":"🇲🇽","캐나다":"🇨🇦","미국":"🇺🇸","아르헨티나":"🇦🇷","브라질":"🇧🇷","프랑스":"🇫🇷",
+    "잉글랜드":"🏴","스페인":"🇪🇸","포르투갈":"🇵🇹","독일":"🇩🇪","네덜란드":"🇳🇱","벨기에":"🇧🇪",
+    "크로아티아":"🇭🇷","이탈리아":"🇮🇹","우루과이":"🇺🇾","콜롬비아":"🇨🇴","에콰도르":"🇪🇨","파라과이":"🇵🇾",
+    "칠레":"🇨🇱","베네수엘라":"🇻🇪","볼리비아":"🇧🇴","모로코":"🇲🇦","세네갈":"🇸🇳","튀니지":"🇹🇳",
+    "알제리":"🇩🇿","가나":"🇬🇭","나이지리아":"🇳🇬","이집트":"🇪🇬","코트디부아르":"🇨🇮","카보베르데":"🇨🇻",
+    "남아프리카공화국":"🇿🇦","카메룬":"🇨🇲","일본":"🇯🇵","대한민국":"🇰🇷","호주":"🇦🇺","이란":"🇮🇷",
+    "사우디아라비아":"🇸🇦","카타르":"🇶🇦","요르단":"🇯🇴","우즈베키스탄":"🇺🇿","이라크":"🇮🇶","뉴질랜드":"🇳🇿",
+    "파나마":"🇵🇦","코스타리카":"🇨🇷","자메이카":"🇯🇲","아이티":"🇭🇹","퀴라소":"🇨🇼","노르웨이":"🇳🇴",
+    "스웨덴":"🇸🇪","스위스":"🇨🇭","폴란드":"🇵🇱","오스트리아":"🇦🇹","체코":"🇨🇿","스코틀랜드":"🏴",
+    "웨일스":"🏴","우크라이나":"🇺🇦","세르비아":"🇷🇸","튀르키예":"🇹🇷","보스니아 헤르체고비나":"🇧🇦",
+    "헝가리":"🇭🇺","슬로바키아":"🇸🇰","덴마크":"🇩🇰","그리스":"🇬🇷","콩고민주공화국":"🇨🇩"
+  };
+
+  // Twemoji로 이모지 → 이미지 변환 (Windows 포함 모든 환경 호환)
+  function twParse(el){
+    if(window.twemoji && el) twemoji.parse(el, {folder:'svg', ext:'.svg'});
+  }
+
+  // 이모지 국기 반환 (없으면 ⚽)
+  function flagEmoji(country){ return COUNTRY_FLAGS[(country||'').trim()] || '⚽'; }
+
+  const BRACKET_DEFS = [
+    {key:'round32', title:'32강<br><span style="font-size:8px;letter-spacing:0;opacity:.75">6/29~7/4 KST</span>',  count:16, editable:true},
+    {key:'round16', title:'16강<br><span style="font-size:8px;letter-spacing:0;opacity:.75">7/5~7/8 KST</span>',   count:8,  editable:false},
+    {key:'qf',      title:'8강<br><span style="font-size:8px;letter-spacing:0;opacity:.75">7/10~7/12 KST</span>',  count:4,  editable:false},
+    {key:'sf',      title:'4강<br><span style="font-size:8px;letter-spacing:0;opacity:.75">7/15~7/16 KST</span>',  count:2,  editable:false},
+    {key:'final',   title:'결승<br><span style="font-size:8px;letter-spacing:0;opacity:.75">7/20 KST</span>',       count:1,  editable:false}
+  ];
+
+  let state = null;
+  let lastChampionRendered = '';
+  let saveTimer = null;
+
+  function genId(){
+    return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('p_' + Date.now() + '_' + Math.random().toString(36).slice(2,8));
+  }
+
+  function defaultBracket(){
+    // ── 브라켓 짝 순서 (r32[0]+r32[1] → r16[0], r32[2]+r32[3] → r16[1], …) ──
+    // r16, 8강, 4강, 결승이 SVG 커넥터와 정확히 일치하도록 인접 쌍으로 배치
+    const round32 = [
+      // ─── r16 A : 파라과이 vs 프랑스 (7/5 KST) ───
+      {a:'독일',        b:'파라과이',           winner:'파라과이'}, // 🇰🇷 6/30 새벽 4시 (경기74)
+      {a:'프랑스',      b:'스웨덴',             winner:'프랑스'},   // 🇰🇷 7/1 새벽 4시 (경기77)
+      // ─── r16 B : 캐나다 vs 모로코 (7/5 KST) ───
+      {a:'캐나다',      b:'남아프리카공화국',    winner:'캐나다'},   // 🇰🇷 6/29 새벽 4시 (경기73)
+      {a:'네덜란드',    b:'모로코',             winner:'모로코'},   // 🇰🇷 6/30 오전 8시 (경기75)
+      // ─── r16 C : 스페인 vs 포르투갈/크로아티아 ───
+      {a:'스페인',      b:'오스트리아',          winner:'스페인'},  // 🇰🇷 7/3 새벽 4시 (경기83) 스페인 3-0
+      {a:'포르투갈',    b:'크로아티아',          winner:''},        // 🇰🇷 7/3 오전 8시 (경기84) 진행중
+      // ─── r16 D : 미국 vs 벨기에 (7/7 KST) ───
+      {a:'미국',        b:'보스니아 헤르체고비나',winner:'미국'},    // 🇰🇷 7/2 오전 9시 (경기82)
+      {a:'벨기에',      b:'세네갈',             winner:'벨기에'},   // 🇰🇷 7/2 오전 8시 (경기81)
+      // ─── r16 E : 브라질 vs 노르웨이 (7/6 KST) ───
+      {a:'브라질',      b:'일본',              winner:'브라질'},   // 🇰🇷 6/30 오전 9시 (경기76)
+      {a:'코트디부아르', b:'노르웨이',           winner:'노르웨이'}, // 🇰🇷 7/1 오전 8시 (경기78)
+      // ─── r16 F : 멕시코 vs 잉글랜드 (7/6 KST) ───
+      {a:'멕시코',      b:'에콰도르',           winner:'멕시코'},   // 🇰🇷 7/1 오전 10시 (경기79)
+      {a:'잉글랜드',    b:'콩고민주공화국',      winner:'잉글랜드'}, // 🇰🇷 7/2 새벽 4시 (경기80)
+      // ─── r16 G : 호주/이집트 vs 아르헨티나/카보베르데 (7/8 KST) ───
+      {a:'호주',        b:'이집트',             winner:''},        // 🇰🇷 7/4 새벽 3시 (경기86)
+      {a:'아르헨티나',  b:'카보베르데',          winner:''},        // 🇰🇷 7/4 오전 7시 (경기87)
+      // ─── r16 H : 스위스/알제리 vs 콜롬비아/가나 (7/8 KST) ───
+      {a:'스위스',      b:'알제리',             winner:''},        // 🇰🇷 7/3 오후 12시 (경기85)
+      {a:'콜롬비아',    b:'가나',              winner:''},        // 🇰🇷 7/4 오전 10시 30분 (경기88)
+    ];
+    return {
+      round32,
+      round16: Array.from({length:8},  () => ({a:'', b:'', winner:''})),
+      qf:      Array.from({length:4},  () => ({a:'', b:'', winner:''})),
+      sf:      Array.from({length:2},  () => ({a:'', b:'', winner:''})),
+      final:   Array.from({length:1},  () => ({a:'', b:'', winner:''})),
+      third:   {a:'', b:'', winner:''}   // 3·4위전
+    };
+  }
+
+  const STATE_VERSION = 8; // deadline 초기화
+
+  function defaultState(){
+    return {
+      stateVersion: STATE_VERSION,
+      entryFee: 10000,
+      participants: [],
+      deadline: false,
+      bracket: defaultBracket(),
+      updatedAt: Date.now()
+    };
+  }
+
+  function migrate(loaded){
+    if(!loaded) return null;
+    const fresh = defaultBracket();
+
+    if(loaded.participants !== undefined){
+      const oldVersion = !loaded.stateVersion || loaded.stateVersion < STATE_VERSION;
+      let bracket;
+      if(oldVersion){
+        // 버전 불일치 → 브라켓 리셋, 참가자 유지, deadline 초기화
+        return {
+          stateVersion: STATE_VERSION,
+          entryFee: 10000,
+          participants: loaded.participants || [],
+          deadline: false,
+          bracket: fresh,
+          updatedAt: Date.now()
+        };
+      }
+      // 같은 버전 → round32 확정 결과만 최신화, r16 이후는 저장값 유지
+      const savedR32 = (loaded.bracket && loaded.bracket.round32) || [];
+      fresh.round32.forEach((defM, i) => {
+        const s = savedR32[i] ? Object.assign({}, savedR32[i]) : {};
+        s.a = defM.a; s.b = defM.b;
+        if(defM.winner) s.winner = defM.winner;
+        fresh.round32[i] = s;
+      });
+      const saved = loaded.bracket || {};
+      return {
+        stateVersion: STATE_VERSION,
+        entryFee:     loaded.entryFee || 10000,
+        participants: loaded.participants || [],
+        deadline:     loaded.deadline   || false,
+        bracket: {
+          round32: fresh.round32,
+          round16: saved.round16 || fresh.round16,
+          qf:      saved.qf      || fresh.qf,
+          sf:      saved.sf      || fresh.sf,
+          final:   saved.final   || fresh.final,
+          third:   saved.third   || fresh.third,
+        },
+        updatedAt: loaded.updatedAt || Date.now()
+      };
+    }
+
+    if(loaded.tickets){
+      return {
+        stateVersion: STATE_VERSION,
+        entryFee: 10000,
+        participants: [],
+        bracket: fresh,
+        updatedAt: Date.now()
+      };
+    }
+    return null;
+  }
+
+  function normalize(s){ return (s||'').trim().replace(/\s+/g,'').toLowerCase(); }
+
+  function escapeHtml(str){
+    return (str||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function timeStr(ts){
+    return new Date(ts).toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+  }
+
+  function setStatus(msg){
+    const el = document.getElementById('save-status');
+    if(el) el.textContent = msg;
+  }
+
+  function potTotal(){ return 10000 * state.participants.length; }
+
+  function renderLed(n){
+    const s = n.toLocaleString('ko-KR');
+    return [...s].map(ch => ch === ',' ? '<span class="led-comma"></span>' : `<span class="led-digit">${ch}</span>`).join('');
+  }
+
+  async function loadState(){
+    try{
+      const val = localStorage.getItem(STORAGE_KEY);
+      if(val) return JSON.parse(val);
+      return null;
+    }catch(e){ return null; }
+  }
+
+  async function saveState(){
+    state.updatedAt = Date.now();
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      setStatus('저장됨 · ' + timeStr(state.updatedAt));
+    }catch(e){
+      console.error(e);
+      setStatus('저장 실패');
+    }
+  }
+
+  function scheduleSave(){
+    setStatus('저장 중...');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveState, 700);
+  }
+
+  function updateCountryDatalist(){
+    const elim = getEliminatedSet();
+    // 32강 전체 팀 중 탈락하지 않은 팀만 추출
+    const survivors = [];
+    state.bracket.round32.forEach(m => {
+      [m.a, m.b].forEach(t => {
+        if(t && t.trim() && !elim.has(normalize(t.trim())) && !survivors.includes(t.trim())){
+          survivors.push(t.trim());
+        }
+      });
+    });
+    const dl = document.getElementById('countries-list');
+    if(!dl) return;
+    if(survivors.length > 0){
+      dl.innerHTML = survivors.map(c => `<option value="${c}">`).join('');
+    } else {
+      dl.innerHTML = Object.keys(COUNTRY_FLAGS).map(c => `<option value="${c}">`).join('');
+    }
+  }
+
+  /* ---------- Bracket ---------- */
+
+  // Layout constants
+  const BKT = { BOX_H:42, BOX_G:16, UNIT:58, COL_W:143, CON_W:20, TOTAL_H:912 };
+  // TOTAL_H = 16*58 - 16 = 912  |  gap=16px gives enough room for date label above each match
+  // TOTAL_H = 16 * UNIT - BOX_G = 828
+
+  function bracketTop(roundIdx, matchIdx){
+    const step = Math.pow(2, roundIdx);
+    return Math.round(matchIdx * step * BKT.UNIT + (step - 1) * BKT.UNIT / 2);
+  }
+
+  function connSVG(roundIdx, nextCount){
+    const mid = BKT.CON_W / 2;
+    const clr = 'rgba(231,183,80,0.45)';
+    let s = `<svg width="${BKT.CON_W}" height="${BKT.TOTAL_H}" style="flex-shrink:0;overflow:visible;align-self:flex-start">`;
+    for(let j = 0; j < nextCount; j++){
+      const ya = bracketTop(roundIdx, 2*j)   + BKT.BOX_H / 2;
+      const yb = bracketTop(roundIdx, 2*j+1) + BKT.BOX_H / 2;
+      const yt = bracketTop(roundIdx+1, j)   + BKT.BOX_H / 2;
+      s += `<line x1="0" y1="${ya}" x2="${mid}" y2="${ya}" stroke="${clr}" stroke-width="1.5"/>`;
+      s += `<line x1="0" y1="${yb}" x2="${mid}" y2="${yb}" stroke="${clr}" stroke-width="1.5"/>`;
+      s += `<line x1="${mid}" y1="${ya}" x2="${mid}" y2="${yb}" stroke="${clr}" stroke-width="1.5"/>`;
+      s += `<line x1="${mid}" y1="${yt}" x2="${BKT.CON_W}" y2="${yt}" stroke="${clr}" stroke-width="1.5"/>`;
+    }
+    s += '</svg>';
+    return s;
+  }
+
+  function teamRowHTML(roundKey, idx, side, editable){
+    const content = editable
+      ? `<input type="text" class="bkt-input" id="bin-${roundKey}-${idx}-${side}" data-round="${roundKey}" data-idx="${idx}" data-side="${side}" list="countries-list" placeholder="팀명" autocomplete="off">`
+      : `<span class="bkt-name" id="bname-${roundKey}-${idx}-${side}">대기</span>`;
+    return `<div class="bkt-team" id="brow-${roundKey}-${idx}-${side}">
+      <span class="bkt-flag" id="bflag-${roundKey}-${idx}-${side}">⚽</span>
+      ${content}
+      <button type="button" class="bkt-adv"  id="badv-${roundKey}-${idx}-${side}"  data-round="${roundKey}" data-idx="${idx}" data-side="${side}" data-action="advance" disabled>▶</button>
+      <button type="button" class="bkt-undo" id="bundo-${roundKey}-${idx}-${side}" data-round="${roundKey}" data-idx="${idx}" data-side="${side}" data-action="undo">↩</button>
+    </div>`;
+  }
+
+  // 각 경기별 한국시간(KST) 날짜 — 미국 동부시간 +13시간
+  const MATCH_DATES = {
+    //        r16A───────── r16B───────── r16C───────── r16D───────── r16E───────── r16F───────── r16G───────── r16H──────────
+    round32: ['6/30','7/1', '6/29','6/30','7/3','7/3', '7/2','7/2', '6/30','7/1', '7/1','7/2', '7/4','7/4', '7/3','7/4'],
+    round16: ['7/5', '7/5', '7/7', '7/7', '7/6', '7/6','7/8','7/8'],
+    qf:      ['7/10','7/11','7/12','7/12'],
+    sf:      ['7/15','7/16'],
+    final:   ['7/20']
+  };
+
+  function buildBracketSkeleton(){
+    let html = `<div class="bkt-outer" style="position:relative;height:${BKT.TOTAL_H}px;display:flex;align-items:flex-start;">`;
+    BRACKET_DEFS.forEach((def, ri) => {
+      html += `<div class="bkt-col" style="position:relative;flex-shrink:0;width:${BKT.COL_W}px;height:100%;"><div class="bkt-col-title">${def.title}</div>`;
+      for(let i = 0; i < def.count; i++){
+        const top = bracketTop(ri, i);
+        const date = (MATCH_DATES[def.key] || [])[i] || '';
+        if(date){
+          html += `<div style="position:absolute;top:${top - 13}px;left:0;right:0;text-align:center;font-size:8.5px;color:rgba(244,236,216,.5);font-family:'Pretendard';pointer-events:none;line-height:1;">${date}</div>`;
+        }
+        html += `<div class="bkt-match" id="bmatch-${def.key}-${i}" style="position:absolute;top:${top}px;width:${BKT.COL_W}px;height:${BKT.BOX_H}px;background:#F4ECD8;border-radius:5px;overflow:hidden;display:flex;flex-direction:column;">`;
+        html += teamRowHTML(def.key, i, 'a', def.editable);
+        html += teamRowHTML(def.key, i, 'b', def.editable);
+        html += `</div>`;
+      }
+      html += `</div>`;
+      if(ri < BRACKET_DEFS.length - 1) html += connSVG(ri, BRACKET_DEFS[ri+1].count);
+    });
+    // Champion box — vertically centered at same position as final match center
+    const champCenter = bracketTop(4, 0) + BKT.BOX_H / 2;
+    html += `<div class="bkt-champ" id="champion-box" style="margin-top:${champCenter - 52}px">
+      <div class="bkt-champ-flag" id="champ-flag">🏆</div>
+      <div class="bkt-champ-name" id="champ-name">미정</div>
+    </div>`;
+    html += '</div>';
+    document.getElementById('bracket-wrap').innerHTML = html;
+  }
+
+  function populateBracket(){
+    const b = state.bracket;
+    BRACKET_DEFS.forEach((def, ri) => {
+      for(let i = 0; i < def.count; i++){
+        const m = b[def.key][i];
+        ['a','b'].forEach(side => {
+          const team = m[side] || '';
+          const rowEl  = document.getElementById(`brow-${def.key}-${i}-${side}`);
+          const flagEl = document.getElementById(`bflag-${def.key}-${i}-${side}`);
+          const advEl  = document.getElementById(`badv-${def.key}-${i}-${side}`);
+          if(!rowEl) return;
+          flagEl.textContent = flagEmoji(team.trim());
+          if(def.editable){
+            const inputEl = document.getElementById(`bin-${def.key}-${i}-${side}`);
+            if(inputEl && document.activeElement !== inputEl) inputEl.value = team;
+          } else {
+            const nameEl = document.getElementById(`bname-${def.key}-${i}-${side}`);
+            if(nameEl) nameEl.textContent = team.trim() || '대기';
+          }
+          const isWinner = !!(m.winner && team.trim() && normalize(m.winner) === normalize(team));
+          const isLoser  = !!(m.winner && team.trim() && !isWinner);
+          rowEl.classList.toggle('winner', isWinner);
+          rowEl.classList.toggle('loser',  isLoser);
+          // ▶ 진출 버튼: 관리자 모드 + 팀 있음 + 아직 결과 없음
+          advEl.disabled   = !isAdmin || !team.trim() || !!m.winner;
+          advEl.title      = isAdmin ? '진출 처리' : '관리자 모드에서만 조작 가능';
+          advEl.textContent = '▶';
+          // ↩ 취소 버튼: 이 팀이 승자일 때만 표시 (CSS로도 제어하지만 disabled로도)
+          const undoEl = document.getElementById(`bundo-${def.key}-${i}-${side}`);
+          if(undoEl){
+            undoEl.disabled = !isAdmin;
+            undoEl.title    = isAdmin ? '진출 취소' : '관리자 모드에서만 조작 가능';
+          }
+        });
+      }
+    });
+    const champ = (b.final[0].winner || '').trim();
+    const champBox = document.getElementById('champion-box');
+    document.getElementById('champ-name').textContent = champ || '미정';
+    document.getElementById('champ-flag').textContent = champ ? flagEmoji(champ) : '🏆';
+    if(champBox) champBox.classList.toggle('decided', !!champ);
+  }
+
+  function propagateBracket(){
+    const b = state.bracket;
+    // r32 → r16 (인접 쌍이 각 r16 경기로 연결 — 시각 커넥터와 1:1 대응)
+    for(let j = 0; j < 8; j++){
+      const r16m = b.round16[j];
+      const wa = b.round32[2*j].winner   || '';
+      const wb = b.round32[2*j+1].winner || '';
+      r16m.a = wa; r16m.b = wb;
+      if(r16m.winner && normalize(r16m.winner) !== normalize(wa) && normalize(r16m.winner) !== normalize(wb)) r16m.winner = '';
+    }
+    for(let j=0; j<4; j++){
+      const qfm = b.qf[j];
+      const wa = b.round16[2*j].winner || '';
+      const wb = b.round16[2*j+1].winner || '';
+      qfm.a = wa; qfm.b = wb;
+      if(qfm.winner && normalize(qfm.winner) !== normalize(wa) && normalize(qfm.winner) !== normalize(wb)) qfm.winner = '';
+    }
+    for(let j=0; j<2; j++){
+      const sfm = b.sf[j];
+      const wa = b.qf[2*j].winner || '';
+      const wb = b.qf[2*j+1].winner || '';
+      sfm.a = wa; sfm.b = wb;
+      if(sfm.winner && normalize(sfm.winner) !== normalize(wa) && normalize(sfm.winner) !== normalize(wb)) sfm.winner = '';
+    }
+    const fm = b.final[0];
+    fm.a = b.sf[0].winner || '';
+    fm.b = b.sf[1].winner || '';
+    if(fm.winner && normalize(fm.winner) !== normalize(fm.a) && normalize(fm.winner) !== normalize(fm.b)) fm.winner = '';
+    // 3·4위전: SF 패자끼리
+    if(!b.third) b.third = {a:'', b:'', winner:''};
+    const sfLoserA = b.sf[0].winner ? (normalize(b.sf[0].winner) === normalize(b.sf[0].a) ? b.sf[0].b : b.sf[0].a) : '';
+    const sfLoserB = b.sf[1].winner ? (normalize(b.sf[1].winner) === normalize(b.sf[1].a) ? b.sf[1].b : b.sf[1].a) : '';
+    b.third.a = sfLoserA; b.third.b = sfLoserB;
+    if(b.third.winner && normalize(b.third.winner) !== normalize(sfLoserA) && normalize(b.third.winner) !== normalize(sfLoserB)) b.third.winner = '';
+  }
+
+  function updateMatchTeam(roundKey, idx, side, value){
+    if(roundKey !== 'round32') return;
+    const m = state.bracket.round32[idx];
+    m[side] = value;
+    if(m.winner && normalize(m.winner) !== normalize(m.a) && normalize(m.winner) !== normalize(m.b)) m.winner = '';
+    propagateBracket();
+  }
+
+  function setMatchWinner(roundKey, idx, side){
+    const m = roundKey === 'third' ? state.bracket.third : state.bracket[roundKey][idx];
+    const team = (side === 'a' ? m.a : m.b) || '';
+    if(!team.trim()) return;
+    m.winner = (m.winner && normalize(m.winner) === normalize(team)) ? '' : team.trim();
+    propagateBracket();
+  }
+
+  function getEliminatedSet(){
+    const set = new Set();
+    const b = state.bracket;
+    ['round32','round16','qf','sf','final','third'].forEach(rk => {
+      const matches = Array.isArray(b[rk]) ? b[rk] : (b[rk] ? [b[rk]] : []);
+      matches.forEach(m => {
+        if(m.winner && m.a.trim() && m.b.trim()){
+          const loser = normalize(m.a) === normalize(m.winner) ? m.b : (normalize(m.b) === normalize(m.winner) ? m.a : '');
+          if(loser.trim()) set.add(normalize(loser));
+        }
+      });
+    });
+    return set;
+  }
+
+  /* ---------- Participants ---------- */
+
+  function getPrizeTiers(){
+    const b = state.bracket;
+    const champion  = (b.final[0] && b.final[0].winner || '').trim();
+    const finalist  = champion ? (normalize(b.final[0].a) === normalize(champion) ? b.final[0].b : b.final[0].a).trim() : '';
+    const thirdTeam = (b.third && b.third.winner || '').trim();
+    return { champion, finalist, thirdTeam };
+  }
+
+  function renderParticipants(){
+    const signupPanel = document.getElementById('signup-panel');
+    const viewPanel   = document.getElementById('participant-view-panel');
+    const grid        = document.getElementById('p-cards-grid');
+    const nameGrid    = document.getElementById('participant-name-grid');
+    const adminDl     = document.getElementById('admin-deadline-area');
+    const adminReopen = document.getElementById('admin-deadline-reopen');
+    const dlBtn       = document.getElementById('deadline-btn');
+    const { champion, finalist, thirdTeam } = getPrizeTiers();
+    const elim = getEliminatedSet();
+
+    if(state.deadline){
+      // ── 마감 후: 신청 패널 숨기고 명단만 표시 ──
+      if(signupPanel) signupPanel.style.display = 'none';
+      if(viewPanel)   viewPanel.style.display   = state.participants.length > 0 ? '' : 'none';
+      if(adminDl)     adminDl.style.display     = 'none';
+
+      // 이름만 보여주는 그리드
+      if(nameGrid){
+        nameGrid.innerHTML = state.participants.length === 0 ? '' :
+          state.participants.map(p => `
+            <div style="background:rgba(244,236,216,.1);border:1px solid rgba(244,236,216,.2);
+              border-radius:10px;padding:10px 18px;font-family:'Black Han Sans';font-weight:400;
+              font-size:18px;color:var(--paper);">${escapeHtml(p.name)}</div>
+          `).join('');
+      }
+
+    } else {
+      // ── 마감 전: 신청 패널 표시, 명단 패널 숨김 ──
+      if(signupPanel) signupPanel.style.display = '';
+      if(viewPanel)   viewPanel.style.display   = 'none';
+
+      // 관리자 마감 버튼
+      if(adminDl) adminDl.style.display = isAdmin ? 'block' : 'none';
+      if(dlBtn){
+        dlBtn.textContent      = '⏹ 참가 마감';
+        dlBtn.style.background = 'var(--red)';
+        dlBtn.style.color      = '#fff';
+      }
+
+      // 참가 신청 카드 표시
+      if(grid){
+        if(state.participants.length === 0){
+          grid.innerHTML = '';
+        } else {
+          const { champion, finalist, thirdTeam } = getPrizeTiers();
+          grid.innerHTML = state.participants.map(p => {
+            let prizeBadge = '';
+            if(champion   && normalize(p.country) === normalize(champion))  prizeBadge = '<div class="p-card-prize p1">🥇 1등</div>';
+            else if(finalist  && normalize(p.country) === normalize(finalist))  prizeBadge = '<div class="p-card-prize p2">🥈 2등</div>';
+            else if(thirdTeam && normalize(p.country) === normalize(thirdTeam)) prizeBadge = '<div class="p-card-prize p3">🥉 3등</div>';
+            return `<div class="p-card">
+              <div class="p-card-name">${escapeHtml(p.name)}</div>
+              <div class="p-card-actions">
+                <button class="p-edit" data-pid="${p.id}">✏️ 수정</button>
+                <button class="p-del"  data-pid="${p.id}" data-action="delete">✕ 삭제</button>
+              </div>
+            </div>`;
+          }).join('');
+        }
+      }
+    }
+  }
+
+  function checkParticipantPassword(pid){
+    const p = state.participants.find(x => x.id === pid);
+    if(!p) return Promise.resolve(false);
+    if(!p.password) return Promise.resolve(true); // 비밀번호 없으면 통과
+    return new Promise(resolve => {
+      const overlay = document.createElement('div');
+      overlay.className = 'pw-overlay';
+      overlay.innerHTML = `
+        <div class="pw-box">
+          <h3>🔐 본인 확인</h3>
+          <div style="font-size:13px;color:rgba(244,236,216,.6);text-align:center;margin-bottom:4px;"><b>${escapeHtml(p.name)}</b>님의 비밀번호를 입력하세요</div>
+          <input type="password" id="cpw-input" placeholder="비밀번호" autofocus>
+          <div class="pw-err" id="cpw-err"></div>
+          <div class="pw-row">
+            <button class="pw-cancel" id="cpw-cancel">취소</button>
+            <button class="pw-confirm" id="cpw-confirm">확인</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+      const input   = overlay.querySelector('#cpw-input');
+      const errEl   = overlay.querySelector('#cpw-err');
+      const confirm = overlay.querySelector('#cpw-confirm');
+      const cancel  = overlay.querySelector('#cpw-cancel');
+      setTimeout(() => input.focus(), 50);
+      function attempt(){
+        if(input.value === p.password){ overlay.remove(); resolve(true); }
+        else { errEl.textContent = '비밀번호가 틀렸습니다.'; input.value = ''; input.focus(); }
+      }
+      confirm.addEventListener('click', attempt);
+      input.addEventListener('keydown', e => { if(e.key === 'Enter') attempt(); });
+      cancel.addEventListener('click', () => { overlay.remove(); resolve(false); });
+      overlay.addEventListener('click', e => { if(e.target === overlay){ overlay.remove(); resolve(false); } });
+    });
+  }
+
+  function showEditCountryModal(pid){
+    const p = state.participants.find(x => x.id === pid);
+    if(!p) return Promise.resolve(null);
+    return new Promise(resolve => {
+      const overlay = document.createElement('div');
+      overlay.className = 'pw-overlay';
+      overlay.innerHTML = `
+        <div class="pw-box">
+          <h3>✏️ 예상 국가 수정</h3>
+          <div style="font-size:13px;color:rgba(244,236,216,.6);text-align:center;margin-bottom:4px;"><b>${escapeHtml(p.name)}</b>님의 현재 국가: <b style="color:var(--gold)">${escapeHtml(p.country)}</b></div>
+          <input type="text" id="edit-country-input" list="countries-list" placeholder="새 국가 입력" autofocus>
+          <div class="pw-err" id="edit-country-err"></div>
+          <div class="pw-row">
+            <button class="pw-cancel" id="edit-cancel">취소</button>
+            <button class="pw-confirm" id="edit-confirm">변경</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+      const input   = overlay.querySelector('#edit-country-input');
+      const errEl   = overlay.querySelector('#edit-country-err');
+      const confirm = overlay.querySelector('#edit-confirm');
+      const cancel  = overlay.querySelector('#edit-cancel');
+      setTimeout(() => input.focus(), 50);
+      function attempt(){
+        const val = input.value.trim();
+        if(!val){ errEl.textContent = '국가명을 입력해주세요.'; return; }
+        const survivors = getSurvivors();
+        if(survivors.length > 0 && !survivors.some(s => normalize(s) === normalize(val))){
+          errEl.textContent = '탈락했거나 대진표에 없는 팀이에요.'; return;
+        }
+        overlay.remove(); resolve(val);
+      }
+      confirm.addEventListener('click', attempt);
+      input.addEventListener('keydown', e => { if(e.key === 'Enter') attempt(); });
+      cancel.addEventListener('click', () => { overlay.remove(); resolve(null); });
+      overlay.addEventListener('click', e => { if(e.target === overlay){ overlay.remove(); resolve(null); } });
+    });
+  }
+
+  window.togglePanel = function(header){
+    const expanded = header.getAttribute('aria-expanded') === 'true';
+    header.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    const body = header.nextElementSibling;
+    body.classList.toggle('collapsed', expanded);
+  };
+
+  /* ---------- Pot ---------- */
+
+  function renderPot(){
+    const pot = potTotal();
+    document.getElementById('led-number-container').innerHTML = renderLed(pot);
+    const n = state.participants.length;
+    const fmtAmt = (v, cnt) => cnt > 0 ? `${Math.floor(v/cnt).toLocaleString('ko-KR')}원/인` : '-';
+    // 미리 당첨자 수 계산
+    const b = state.bracket;
+    const champion  = (b.final[0] && b.final[0].winner || '').trim();
+    const finalist  = champion ? (normalize(b.final[0].a) === normalize(champion) ? b.final[0].b : b.final[0].a) : '';
+    const thirdTeam = (b.third && b.third.winner || '').trim();
+    const w1 = champion  ? state.participants.filter(p => normalize(p.country) === normalize(champion)).length  : 0;
+    const w2 = finalist  ? state.participants.filter(p => normalize(p.country) === normalize(finalist)).length  : 0;
+    const w3 = thirdTeam ? state.participants.filter(p => normalize(p.country) === normalize(thirdTeam)).length : 0;
+    const p1 = Math.floor(pot * 0.7);
+    const p2 = Math.floor(pot * 0.2);
+    const p3 = pot - p1 - p2;
+    const el1a = document.getElementById('prize-1st-amt');
+    const el2a = document.getElementById('prize-2nd-amt');
+    const el3a = document.getElementById('prize-3rd-amt');
+    const el1n = document.getElementById('prize-1st-note');
+    const el2n = document.getElementById('prize-2nd-note');
+    const el3n = document.getElementById('prize-3rd-note');
+    if(el1a) el1a.textContent = n > 0 ? `${p1.toLocaleString('ko-KR')}원` : '-';
+    if(el2a) el2a.textContent = n > 0 ? `${p2.toLocaleString('ko-KR')}원` : '-';
+    if(el3a) el3a.textContent = n > 0 ? `${p3.toLocaleString('ko-KR')}원` : '-';
+    if(el1n) el1n.textContent = '우승팀 적중자 (결과 공개 시 확인)';
+    if(el2n) el2n.textContent = '준우승팀 적중자 (결과 공개 시 확인)';
+    if(el3n) el3n.textContent = '3위팀 적중자 (결과 공개 시 확인)';
+  }
+
+  function renderThirdPlace(){
+    const b = state.bracket;
+    if(!b.third) return;
+    const m = b.third;
+    ['a','b'].forEach(side => {
+      const team  = m[side] || '';
+      const rowEl  = document.getElementById(`brow-third-0-${side}`);
+      const flagEl = document.getElementById(`bflag-third-0-${side}`);
+      const nameEl = document.getElementById(`bname-third-0-${side}`);
+      const advEl  = document.getElementById(`badv-third-0-${side}`);
+      const undoEl = document.getElementById(`bundo-third-0-${side}`);
+      if(!rowEl) return;
+      flagEl.textContent = flagEmoji(team.trim());
+      nameEl.textContent = team.trim() || '대기';
+      const isWinner = !!(m.winner && team.trim() && normalize(m.winner) === normalize(team));
+      const isLoser  = !!(m.winner && team.trim() && !isWinner);
+      rowEl.classList.toggle('winner', isWinner);
+      rowEl.classList.toggle('loser',  isLoser);
+      advEl.disabled  = !isAdmin || !team.trim() || !!m.winner;
+      advEl.title     = isAdmin ? '3위 확정' : '관리자 모드에서만 조작 가능';
+      if(undoEl){ undoEl.disabled = !isAdmin; }
+    });
+  }
+
+  /* ---------- Reveal ---------- */
+
+  function fireConfetti(){
+    const colors = ['#E7B750','#F4ECD8','#2F7A4C','#C0392B'];
+    for(let i=0; i<28; i++){
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random()*100 + 'vw';
+      p.style.background = colors[Math.floor(Math.random()*colors.length)];
+      p.style.animationDuration = (2 + Math.random()*1.5) + 's';
+      p.style.animationDelay = (Math.random()*0.4) + 's';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 4200);
+    }
+  }
+
+  function showRevealOverlay(){
+    const b = state.bracket;
+    const champion  = (b.final[0] && b.final[0].winner || '').trim();
+    if(!champion) return;
+    const finalist  = (normalize(b.final[0].a) === normalize(champion) ? b.final[0].b : b.final[0].a).trim();
+    const thirdTeam = (b.third && b.third.winner || '').trim();
+    const pot = potTotal();
+    const p1 = Math.floor(pot * 0.7);
+    const p2 = Math.floor(pot * 0.2);
+    const p3 = pot - p1 - p2;
+    const w1 = state.participants.filter(p => normalize(p.country) === normalize(champion));
+    const w2 = finalist  ? state.participants.filter(p => normalize(p.country) === normalize(finalist))  : [];
+    const w3 = thirdTeam ? state.participants.filter(p => normalize(p.country) === normalize(thirdTeam)) : [];
+    const anyWinner = w1.length + w2.length + w3.length > 0;
+    const fmt = (v, cnt) => cnt > 0 ? `${Math.floor(v/cnt).toLocaleString('ko-KR')}원` : '해당없음';
+
+    const overlay = document.createElement('div');
+    overlay.className = 'reveal-overlay' + (anyWinner ? '' : ' dinner-mode');
+
+    if(anyWinner){
+      overlay.innerHTML = `
+        <div class="ov-eyebrow">🏆 경품 대상자 확정 🏆</div>
+        <div class="ov-flag" style="font-size:clamp(48px,10vw,80px)">${flagEmoji(champion)}</div>
+        <div class="ov-country">${escapeHtml(champion)} 우승</div>
+        <div style="position:relative; width:min(700px,94vw); margin-top:20px;">
+          <!-- 1등: 중앙 최상단 (가장 크게) -->
+          ${w1.length > 0 ? `<div style="text-align:center; margin-bottom:16px;">
+            <div style="font-size:16px; color:rgba(244,236,216,.7); margin-bottom:6px;">🥇 1등</div>
+            <div style="font-family:'Black Han Sans'; font-weight:400; font-size:clamp(30px,8vw,64px); color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.4),0 0 30px rgba(231,183,80,.6); line-height:1.1;">${w1.map(w=>escapeHtml(w.name)).join(' · ')}</div>
+            <div style="font-size:clamp(13px,2.5vw,18px); color:var(--gold); margin-top:6px; font-weight:600;">🎉 ${fmt(p1,w1.length)}</div>
+          </div>` : `<div style="text-align:center;margin-bottom:16px;color:rgba(244,236,216,.35);font-size:14px;">🥇 1등 적중자 없음</div>`}
+
+          <!-- 2등(좌측 대각선) & 3등(우측 대각선) -->
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:0 8px;">
+            <!-- 🥈 2등 — 좌측 대각선 (아래쪽) -->
+            <div style="text-align:center; transform:rotate(-6deg) translateY(10px); flex:1;">
+              ${w2.length > 0 ? `
+                <div style="font-size:13px; color:rgba(244,236,216,.65); margin-bottom:5px;">🥈 2등</div>
+                <div style="font-family:'Black Han Sans'; font-weight:400; font-size:clamp(18px,4vw,36px); color:#e0e0e0; text-shadow:0 2px 0 rgba(0,0,0,.4); line-height:1.1;">${w2.map(w=>escapeHtml(w.name)).join(' · ')}</div>
+                <div style="font-size:clamp(11px,2vw,15px); color:#ccc; margin-top:5px;">${fmt(p2,w2.length)}</div>
+              ` : `<div style="color:rgba(244,236,216,.3);font-size:12px;">🥈 적중자 없음</div>`}
+            </div>
+            <!-- 🥉 3등 — 우측 대각선 (아래쪽) -->
+            <div style="text-align:center; transform:rotate(6deg) translateY(10px); flex:1;">
+              ${w3.length > 0 ? `
+                <div style="font-size:13px; color:rgba(244,236,216,.65); margin-bottom:5px;">🥉 3등</div>
+                <div style="font-family:'Black Han Sans'; font-weight:400; font-size:clamp(18px,4vw,36px); color:#cd9b5a; text-shadow:0 2px 0 rgba(0,0,0,.4); line-height:1.1;">${w3.map(w=>escapeHtml(w.name)).join(' · ')}</div>
+                <div style="font-size:clamp(11px,2vw,15px); color:#cd9b5a; margin-top:5px;">${fmt(p3,w3.length)}</div>
+              ` : `<div style="color:rgba(244,236,216,.3);font-size:12px;">🥉 적중자 없음</div>`}
+            </div>
+          </div>
+        </div>
+        <div class="ov-close">화면을 클릭하면 닫혀요</div>`;
+      setTimeout(() => { fireConfetti(); fireConfetti(); }, 300);
+    } else {
+      overlay.innerHTML = `
+        <div class="ov-eyebrow">🍻 전원 회식 확정 🍻</div>
+        <div class="ov-flag">🍺</div>
+        <div class="ov-country">아무도 못 맞혔어요!</div>
+        <div class="ov-divider"></div>
+        <div class="ov-winner-wrap">
+          <div class="ov-winner-card">
+            <div class="ov-winner-name" style="font-size:clamp(18px,4vw,36px)">${state.participants.map(p=>escapeHtml(p.name)).join(', ')}</div>
+            <div class="ov-winner-amount">회식비 ${pot.toLocaleString('ko-KR')}원으로 다같이 먹어요 😋</div>
+          </div>
+        </div>
+        <div class="ov-close">화면을 클릭하면 닫혀요</div>`;
+    }
+    overlay.addEventListener('click', () => overlay.remove());
+    document.body.appendChild(overlay);
+    twParse(overlay);
+    if(anyWinner) setTimeout(() => { fireConfetti(); fireConfetti(); }, 300);
+  }
+
+  function renderReveal(){
+    const el = document.getElementById('reveal');
+    const btnArea = document.getElementById('reveal-btn-area');
+    const b  = state.bracket;
+    const champion  = (b.final[0] && b.final[0].winner || '').trim();
+    const thirdTeam = (b.third && b.third.winner || '').trim();
+    const allReady  = !!(champion && thirdTeam);
+
+    // 참가비 대시보드 안 결과 공개 버튼 표시 제어
+    if(btnArea) btnArea.style.display = allReady ? 'block' : 'none';
+
+    if(!allReady){
+      let msg = '🏆 결승전과 3·4위전 결과가 모두 확정되면<br>아래 결과 공개 버튼이 활성화됩니다.';
+      if(champion && !thirdTeam) msg = '🥉 3·4위전 결과를 입력하면 결과 공개가 활성화됩니다.';
+      if(!champion && thirdTeam) msg = '🏆 결승전 결과를 입력하면 결과 공개가 활성화됩니다.';
+      el.innerHTML = `<p class="placeholder">${msg}</p>`;
+      lastChampionRendered = '';
+      return;
+    }
+
+    el.innerHTML = ''; // 결과 공개 섹션은 비워두고 버튼은 대시보드에 표시
+    if(lastChampionRendered !== champion){ fireConfetti(); lastChampionRendered = champion; }
+  }
+
+  /* ---------- Render all ---------- */
+
+  function showAdminModal(){
+    return new Promise(resolve => {
+      const overlay = document.createElement('div');
+      overlay.className = 'pw-overlay';
+      overlay.innerHTML = `
+        <div class="pw-box">
+          <h3>🔐 관리자 인증</h3>
+          <input type="password" id="pw-input" placeholder="비밀번호 입력" autofocus>
+          <div class="pw-err" id="pw-err"></div>
+          <div class="pw-row">
+            <button class="pw-cancel" id="pw-cancel">취소</button>
+            <button class="pw-confirm" id="pw-confirm">확인</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+
+      const input   = overlay.querySelector('#pw-input');
+      const errEl   = overlay.querySelector('#pw-err');
+      const confirm = overlay.querySelector('#pw-confirm');
+      const cancel  = overlay.querySelector('#pw-cancel');
+
+      setTimeout(() => input.focus(), 50);
+
+      function attempt(){
+        if(input.value === ADMIN_PW){
+          overlay.remove(); resolve(true);
+        } else {
+          errEl.textContent = '비밀번호가 틀렸습니다.';
+          input.value = ''; input.focus();
+        }
+      }
+      confirm.addEventListener('click', attempt);
+      input.addEventListener('keydown', e => { if(e.key === 'Enter') attempt(); });
+      cancel.addEventListener('click', () => { overlay.remove(); resolve(false); });
+      overlay.addEventListener('click', e => { if(e.target === overlay){ overlay.remove(); resolve(false); } });
+    });
+  }
+
+  window.togglePanel = function(header){
+    const expanded = header.getAttribute('aria-expanded') === 'true';
+    header.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    const body = header.nextElementSibling;
+    body.classList.toggle('collapsed', expanded);
+  };
+
+  function renderAdminBtn(){
+    const btn = document.getElementById('admin-btn');
+    if(!btn) return;
+    if(isAdmin){
+      btn.textContent = '🔓 관리자 모드 ON';
+      btn.style.borderColor = 'var(--gold)';
+      btn.style.color = 'var(--gold)';
+      btn.style.background = 'rgba(231,183,80,.12)';
+    } else {
+      btn.textContent = '🔒 관리자 모드';
+      btn.style.borderColor = 'rgba(231,183,80,.5)';
+      btn.style.color = 'rgba(231,183,80,.85)';
+      btn.style.background = 'none';
+    }
+  }
+
+  function renderAll(){
+    renderPot();
+    renderParticipants();
+    populateBracket();
+    renderThirdPlace();
+    updateCountryDatalist();
+    renderReveal();
+    renderAdminBtn();
+    setStatus('업데이트됨 · ' + timeStr(state.updatedAt));
+    twParse(document.body);
+  }
+
+  async function pollSync(){
+    try{
+      const fresh = await loadState();
+      if(!fresh) return;
+      const migrated = migrate(fresh);
+      if(migrated && migrated.updatedAt !== (state && state.updatedAt)){
+        state = migrated;
+        renderAll();
+      }
+    }catch(e){}
+  }
+
+  /* ---------- Events ---------- */
+
+  document.addEventListener('input', (e) => {
+    if(e.target.matches('.bkt-input')){
+      const { round, idx, side } = e.target.dataset;
+      updateMatchTeam(round, +idx, side, e.target.value);
+      renderPot();
+      populateBracket();
+      renderParticipants();
+      updateCountryDatalist();
+      scheduleSave();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key !== 'Enter') return;
+    if(e.target.id === 'signup-name' || e.target.id === 'signup-country') document.getElementById('signup-btn').click();
+  });
+
+  document.addEventListener('click', async (e) => {
+    if(e.target.id === 'admin-btn'){
+      if(isAdmin){
+        isAdmin = false;
+        renderAdminBtn();
+        populateBracket();
+        renderThirdPlace();
+        renderParticipants();
+      } else {
+        const ok = await showAdminModal();
+        if(ok){
+          isAdmin = true;
+          renderAdminBtn();
+          populateBracket();
+          renderThirdPlace();
+          renderParticipants();
+          setStatus('관리자 모드 활성화');
+        }
+      }
+      return;
+    } else if(e.target.id === 'deadline-btn' || e.target.id === 'deadline-reopen-btn'){
+      if(e.target.id === 'deadline-reopen-btn'){
+        // 마감 해제는 관리자 비밀번호 확인 필요
+        const ok = await showAdminModal();
+        if(!ok) return;
+        state.deadline = false;
+      } else {
+        state.deadline = !state.deadline;
+      }
+      await saveState();
+      renderParticipants();
+      return;
+    } else if(e.target.id === 'signup-btn'){
+      if(state.deadline){ alert('참가 신청이 마감됐어요.'); return; }
+      const nameEl     = document.getElementById('signup-name');
+      const countryEl  = document.getElementById('signup-country');
+      const passwordEl = document.getElementById('signup-password');
+      const name    = nameEl.value.trim();
+      const country = countryEl.value.trim();
+      const password = passwordEl ? passwordEl.value.trim() : '';
+      if(!name || !country){ alert('이름과 우승 예상 국가를 모두 입력해주세요.'); return; }
+      if(!password){ alert('수정·삭제 시 사용할 비밀번호를 입력해주세요.'); return; }
+      const survivors = getSurvivors();
+      if(survivors.length > 0 && !survivors.some(s => normalize(s) === normalize(country))){
+        alert(`"${country}"은(는) 이미 탈락했거나 대진표에 없는 팀이에요.\n생존팀 중에서 선택해주세요.`); return;
+      }
+      if(state.participants.some(p => p.name.trim() === name)){
+        // 중복 이름 — 그냥 허용 (진행자가 이름 구분해서 입력)
+      }
+      state.participants.push({ id: genId(), name, country, password });
+      nameEl.value = ''; countryEl.value = ''; if(passwordEl) passwordEl.value = '';
+      nameEl.focus();
+      await saveState();
+      renderAll();
+    } else if(e.target.matches('.p-edit')){
+      if(state.deadline) return;
+      const pid = e.target.dataset.pid;
+      const ok = await checkParticipantPassword(pid);
+      if(!ok) return;
+      const newCountry = await showEditCountryModal(pid);
+      if(newCountry){
+        const p = state.participants.find(x => x.id === pid);
+        if(p){ p.country = newCountry; await saveState(); renderAll(); }
+      }
+    } else if(e.target.matches('.p-del')){
+      if(state.deadline) return;
+      const pid = e.target.dataset.pid;
+      const ok = await checkParticipantPassword(pid);
+      if(!ok) return;
+      state.participants = state.participants.filter(p => p.id !== pid);
+      await saveState();
+      renderAll();
+    } else if((e.target.matches('.bkt-adv') || e.target.matches('.bkt-undo')) && !e.target.disabled){
+      const { round, idx, side, action } = e.target.dataset;
+      if(action === 'undo'){
+        const m = round === 'third' ? state.bracket.third : state.bracket[round][+idx];
+        m.winner = '';
+        propagateBracket();
+      } else {
+        // 진출: 해당 팀을 winner로 설정
+        setMatchWinner(round, +idx, side);
+      }
+      await saveState();
+      populateBracket();
+      renderThirdPlace();
+      renderParticipants();
+      updateCountryDatalist();
+      renderReveal();
+      twParse(document.body);
+    } else if(e.target.id === 'reset-all-btn'){
+      const resetOk = await showAdminModal();
+      if(!resetOk) return;
+      state = defaultState();
+      await saveState();
+      renderAll();
+    } else if(e.target.id === 'refresh-btn'){
+      const fresh = await loadState();
+      if(!fresh){ setStatus('저장된 데이터 없음 · 현재 상태 유지'); return; }
+      const migrated = migrate(fresh);
+      if(migrated){ state = migrated; renderAll(); setStatus('불러오기 완료'); }
+      else{ setStatus('데이터를 읽을 수 없어요 · 현재 상태 유지'); }
+    }
+  });
+
+  function getSurvivors(){
+    const elim = getEliminatedSet();
+    const all = [];
+    state.bracket.round32.forEach(m => {
+      if(m.a.trim()) all.push(m.a.trim());
+      if(m.b.trim()) all.push(m.b.trim());
+    });
+    return all.filter(t => !elim.has(normalize(t)));
+  }
+
+  (async function init(){
+    buildBracketSkeleton();
+    setStatus('불러오는 중...');
+    const loaded = await loadState();
+    state = migrate(loaded) || defaultState();
+    propagateBracket();
+    updateCountryDatalist();
+    renderAll();
+
+    // 국가 입력창: 포커스 시 자동 클리어 → 목록 바로 보임
+    // 블러 시 아무것도 선택 안 했으면 이전 값 복원
+    document.addEventListener('focus', e => {
+      if(e.target.id === 'signup-country' || e.target.id === 'edit-country-input'){
+        e.target.dataset.prev = e.target.value;
+        e.target.value = '';
+      }
+    }, true);
+    document.addEventListener('blur', e => {
+      if(e.target.id === 'signup-country' || e.target.id === 'edit-country-input'){
+        if(!e.target.value.trim()) e.target.value = e.target.dataset.prev || '';
+      }
+    }, true);
+
+    window.addEventListener('storage', () => pollSync());
+  })();
+</script>
+</body>
+</html>
